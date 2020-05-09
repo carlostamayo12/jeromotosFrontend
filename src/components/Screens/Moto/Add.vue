@@ -70,9 +70,9 @@
       </q-list>
     </q-card-section>
     
-		<q-card-actions align="right" class="text-black">
-      <q-btn flat label="Cancel" v-close-popup />
-      <q-btn flat label="Aceptar" :disable="disabledButton" @click="createMoto" />
+		<q-card-actions align="right" class="text-black q-mb-none">
+      <q-btn label="Cancel" color="red" v-close-popup />
+      <q-btn label="Aceptar" color="red" icon-right="send" :disable="disabledButton" @click="createMoto" />
     </q-card-actions>
   </q-card>
 </template>

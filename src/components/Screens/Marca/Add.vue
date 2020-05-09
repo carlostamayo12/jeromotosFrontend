@@ -15,8 +15,8 @@
 					/>
 				</q-card-section>
 				<q-card-actions align="right" class="text-black">
-					<q-btn flat label="Cancel" v-close-popup />
-					<q-btn flat label="Aceptar" :disable="disabledButton"  @click="createMarca" />
+					<q-btn color="red" label="Cancel" v-close-popup />
+					<q-btn color="red" label="Aceptar" :disable="disabledButton"  @click="createMarca" />
 				</q-card-actions>
 			</q-card>
 </template>
@@ -48,12 +48,12 @@ export default {
 				}
 				http(ruta, datos, response => {
 					if (!response.data.error) {
-							this.$emit('click',false, response.data.datos.nombre)
+							this.$emit('click', false, response.data.datos.nombre)
 						} else {
-							this.$emit('click',true , response.data.mensaje)
+							this.$emit('click', true, response.data.mensaje)
 						}
 				}, e =>{
-						this.$emit('click',2, e.message)
+						this.$emit('click', false, e.message)
 				})
 		},
 	}

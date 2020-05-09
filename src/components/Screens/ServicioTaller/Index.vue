@@ -63,13 +63,13 @@
 
 <script>
 import { Dialog } from 'quasar'
-import http from "../functions/http"
-import numberPages from "../functions/numberPages"
+import http from "../../../functions/http";
+import numberPages from "../../../functions/numberPages";
 
-import Add from 'components/Dialogs/ServicioTaller/Add'
-import Edit from 'components/Dialogs/ServicioTaller/Edit'
-import Ver from 'components/Dialogs/ServicioTaller/Ver'
-import Error from 'components/Dialogs/Error'
+import Add from './Add'
+import Edit from './Edit'
+import Ver from './Ver'
+import Error from '../Error'
 
 export default {
     components:{

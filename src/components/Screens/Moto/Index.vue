@@ -2,7 +2,7 @@
 <div class="q-pa-md fila" style="max-width: 500px; margin-top:80px;">
 		<q-toolbar class="bg-red text-white rounded-borders">
 		<q-toolbar-title>Motocicleta</q-toolbar-title>
-				<q-input dark dense standout v-model="textFind" input-class="text-left" class="q-ml-md">
+				<q-input dark dense standout v-model="textFind" input-class="text-left" class="q-ml-md text-uppercase">
           <template v-slot:append>
             <q-icon v-if="textFind === ''" name="search" />
             <q-icon v-else name="clear" class="cursor-pointer" @click="textFind = ''" />
@@ -54,24 +54,26 @@
 		</q-dialog>-->
 	
 		<q-dialog v-model='dialogError'>
-			<View :error='error'/>
+			<Error :error='error'/>
 		</q-dialog>
 
 </div>
 </template>
 
 <script>
-import http from "../functions/http"
-import numberPages from "../functions/numberPages"
-import Add from 'components/Dialogs/Moto/Add'
-import Edit from 'components/Dialogs/Moto/Edit'
-import View from 'components/Dialogs/Moto/View'
-import Error from 'components/Dialogs/Error'
+import { Dialog } from 'quasar'
+import http from "../../../functions/http";
+import numberPages from "../../../functions/numberPages";
+
+import Add from './Add'
+import Edit from './Edit'
+import Ver from './Ver'
+import Error from '../Error'
 
 
 export default {
     components:{
-		Add, Edit, View, Error
+		Add, Edit, Ver, Error, Dialog
 	},	
     data(){
         return {

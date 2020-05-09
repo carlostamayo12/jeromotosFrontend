@@ -16,6 +16,7 @@
 					<q-tab name="moto" label="Moto" />
 					<q-tab name="persona" label="Persona" />
 					<q-tab name="serviciotaller" label="Servicio Taller" />
+					<q-tab name="tablamantenimiento" label="Tabla Mantenmiento" />
 					<q-tab name="tipomoto" label="Tipo Moto" />
 					<q-tab name="ordenservicio" label="Orden Servicio" />
 					<q-route-tab class="text-bold" icon="close" to="/" exact />
@@ -32,6 +33,10 @@
 					<Moto />
 				</q-tab-panel>
 
+				<q-tab-panel  name="ordenservicio">
+					<Orden />
+				</q-tab-panel>
+
 				<q-tab-panel name="persona">
 					<Persona />
 				</q-tab-panel>  
@@ -40,13 +45,15 @@
 					<ServicioTaller />
 				</q-tab-panel>
 
+				<q-tab-panel  name="tablamantenimiento">
+					<TablaMantenimiento />
+				</q-tab-panel>
+				
 				<q-tab-panel  name="tipomoto">
 					<TipoMoto />
 				</q-tab-panel>
 
-				<q-tab-panel  name="ordenservicio">
-					<Orden />
-				</q-tab-panel>
+				
 
 			</q-tab-panels>
 		</q-card>
@@ -54,12 +61,16 @@
 </template>  
 
 <script>
-	import Marca from "../components/Marca";
-	import Moto from "../components/Moto";
-	import Persona from "../components/Persona";
-	import ServicioTaller from "../components/ServicioTaller";
-	import TipoMoto from "../components/TipoMoto";
-	import Orden from "../components/Orden"
+	//import Marca from "../components/Marca";
+	import Marca from "../components/Screens/Marca/Index";
+	import Moto from "../components/Screens/Moto/Index";
+	import Orden from "../components/Screens/Orden/Index"
+	import Persona from "../components/Screens/Persona/Index";
+	import ServicioTaller from "../components/Screens/ServicioTaller/Index";
+	import TablaMantenimiento from "../components/Screens/TablaMantenimiento/Index"
+	import TipoMoto from "../components/Screens/TipoMoto/Index";
+	
+
 	//import OrdenServicio from "../components/OrdenServicio"*/
 	//import { LocalStorage, SessionStorage } from 'quasar'
 	
@@ -67,10 +78,12 @@
 		components: {
 			Marca,
 			Moto,
+			Orden,
 			Persona,
 			ServicioTaller,
-			TipoMoto,
-			Orden
+			TablaMantenimiento,
+			TipoMoto
+			
 		},
 		data() {
 			return {  

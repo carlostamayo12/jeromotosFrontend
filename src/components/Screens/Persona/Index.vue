@@ -88,13 +88,14 @@
 
 <script>
 import { Dialog } from 'quasar'
-import http from "../functions/http"
-import numberPages from "../functions/numberPages"
-import rol from "../functions/rol"
-import Add from 'components/Dialogs/Persona/Add'
-import Edit from 'components/Dialogs/Persona/Edit'
-import Ver from 'components/Dialogs/Persona/Ver'
-import Error from 'components/Dialogs/Error'
+import http from "../../../functions/http";
+import numberPages from "../../../functions/numberPages";
+import rol from "../../../functions/rol"
+
+import Add from './Add'
+import Edit from './Edit'
+import Ver from './Ver'
+import Error from '../Error'
 
 export default {
   components:{

@@ -70,13 +70,14 @@
 
 <script>
   import { Dialog } from "quasar";
-  import http from "../functions/http";
-  import numberPages from "../functions/numberPages";
-  import Add from "components/Dialogs/TipoMoto/Add";
-  import Edit from "components/Dialogs/TipoMoto/Edit";
-  import Ver from "components/Dialogs/TipoMoto/Ver";
-  import TablaEdit from "components/Dialogs/TablaMantenimiento/TablaEdit";
-  import Error from "components/Dialogs/Error";
+  import http from "../../../functions/http";
+  import numberPages from "../../../functions/numberPages";
+	
+	import Add from "./Add";
+  import Edit from "./Edit";
+  import Ver from "./Ver";
+  import TablaEdit from "../TablaMantenimiento/TablaEdit";
+  import Error from "../Error";
 
   export default {
     components: {

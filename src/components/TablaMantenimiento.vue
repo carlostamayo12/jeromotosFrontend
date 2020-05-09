@@ -1,5 +1,5 @@
 <template>
-   <div> Orden Servicio </div>   
+   <div> Tabla Manteninmiento </div>   
 
 </template>
 

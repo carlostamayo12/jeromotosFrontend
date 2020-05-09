@@ -61,7 +61,7 @@
         type="checkbox"
         inline
       />
-
+      <pre>{{dato}}</pre>
     </q-card-section>
     <!--v-if=" this.$q.sessionStorage.getItem('administrador').id > 3"-->
     <q-card-actions align="right" class="text-black">
@@ -71,6 +71,7 @@
   </q-card>
 </template>
 <script>
+  import { firebaseAuth, firebaseDB } from "../../../boot/firebase";
   import http from "../../../functions/http";
   import disabled from "../../../functions/disabled";
 
@@ -80,7 +81,6 @@
       return {
         roles: [],
         listaRoles: [
-          { value: 0, label: "Clientes" },
           { value: 1, label: "Tecnico" },
           { value: 2, label: "Administrador" }
         ]
@@ -97,39 +97,29 @@
     methods: {
       createPersona() {
         //this.dato.adminId = (SessionStorage.getItem('administrador').id)
-        //this.roles.length == 0 ? 0 : this.roles.length == 1 ? this.roles[0] : 3;
-        var adminId = 1;
+        this.dato.rol = this.roles.length == 0 ? 0 : this.roles.length == 1 ? this.roles[0] : 3;
         var ruta = "persona/create";
-        console.log(this.$props.dato);
-        this.$emit("click", 1, "menjase");
 
-        /*http(ruta, {}, response => {}, e => {
-  					if (!response.data.error){
-
-  					}
-  				})*/
-
-        /*http(ruta,this.dato, response => {
-  						if (!response.data.error) {
-  							firebaseAuth
-  								.createUserWithEmailAndPassword(
-  									response.data.datos.correo,
-  									response.data.datos.identificacion
-  								)
-  								.then(res => {
-  									this.dato.uId = res.user.uid;
-  									//console.log(res.user.uid)
-  								})
-  								.catch(e => {
-  									console.error(e.message);
-  								});
-  						}
-  					},
-  					e => {
-  						//borrar firebase
-  						console.log("error http");
-  					}
-  				);*/
+        firebaseAuth
+          .createUserWithEmailAndPassword(
+            this.dato.correo,
+            this.dato.identificacion
+          )
+          .then(response => {
+            this.dato.uId = response.user.uid
+            http(ruta, this.dato, response => {
+              if(!response.data.error){
+                this.$emit('click', false, response.data.datos.nombre)
+              }else{
+                this.$emit('click', true, response.data.mensaje)
+              }
+            }, e => {
+              this.$emit('click', true, e.message)
+            } )
+          })
+          .catch(e => {
+            this.$emit('click', true, e.message)
+          });
       }
     }
   };

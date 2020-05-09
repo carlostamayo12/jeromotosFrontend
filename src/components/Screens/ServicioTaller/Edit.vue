@@ -14,7 +14,6 @@
         maxlength="20"
       />
     </q-card-section>
-
     <q-card-actions align="right" class="text-black">
       <q-btn flat label="Cancel" v-close-popup />
       <q-btn flat label="Aceptar" :disable="disabledButton" @click="updateMarca()" />
@@ -29,33 +28,36 @@
   export default {
     props: ["dato"],
     data() {
-      return {
-				  
-			};
-		},
-		computed:{
-		disabledButton: function(){
-			return disabled.servicioTaller(this.dato)
-		},
-		methods:{
-			updateMarca(){
-				var ruta = "ServicioTaller/update";
-				var datos = {
-					id: this.dato.id,
-					nombre: this.dato.nombre.toUpperCase(),
-					adminId: 1
-				}
-				http(ruta, datos, response => {
-					if (!response.data.error) {
-							this.$emit('click', false, this.dato.nombre)
-						} else {
-							this.$emit('click', true, response.data.mensaje)
-						}
-				}, e => {
-						this.$emit('click',2, e.message)
-				})
-			}
-		}
-	},
+      return {};
+    },
+    computed: {
+      disabledButton: function() {
+        return disabled.servicioTaller(this.dato);
+      },
+      methods: {
+        updateMarca() {
+          var ruta = "ServicioTaller/update";
+          var datos = {
+            id: this.dato.id,
+            nombre: this.dato.nombre.toUpperCase(),
+            adminId: 1
+          };
+          http(
+            ruta,
+            datos,
+            response => {
+              if (!response.data.error) {
+                this.$emit("click", false, this.dato.nombre);
+              } else {
+                this.$emit("click", true, response.data.mensaje);
+              }
+            },
+            e => {
+              this.$emit("click", 2, e.message);
+            }
+          );
+        }
+      }
+    }
   };
 </script>

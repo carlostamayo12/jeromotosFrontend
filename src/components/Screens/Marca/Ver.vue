@@ -18,17 +18,16 @@
     </q-card-section>
 
     <q-card-actions align="right" class="text-black">
-      <q-btn flat label="Cancel" />
-      <q-btn flat label="Aceptar" />
+      <q-btn color="red" label="Cancel" v-close-popup />
     </q-card-actions>
   </q-card>
 </template>
 <script>
 export default {
-	props: ["dato"],
-	data(){
+  props:['dato'],
+  data(){
 		return{
-
+      nombre: 'Marca'
 		}
 	}
 }
