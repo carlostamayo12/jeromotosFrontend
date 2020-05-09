@@ -65,15 +65,21 @@
 					color="black"
 				/>
 			</div>
-	
-		<q-dialog v-model='dialogAdd'>
+	  
+    <q-dialog v-model='dialogAdd'>
 			<Add :dato='dato' @click="createPersona" />
 		</q-dialog>
-	</div>
+
+    <q-dialog v-model='dialogEdit'>
+			<Edit />
+		</q-dialog>
+    
+	
+  </div>
 </template>
 
 <script>
-	
+import { Dialog } from 'quasar'
 import http from "../functions/http"
 import numberPages from "../functions/numberPages"
 import rol from "../functions/rol"
@@ -82,15 +88,18 @@ import Edit from 'components/Dialogs/Persona/Edit'
 import View from 'components/Dialogs/Persona/View'
 import Error from 'components/Dialogs/Error'
 
-	
 export default {
+  components:{
+		Add, Edit, View, Error, Dialog
+	},	
   data() {
       return {
         error: "",
         textFind: "",
         dialogAdd: false,
         dialogEdit: false,
-				dialogView: false,
+        dialogView: false,
+        dialogError: false,
 				selectRol: { value: 0, label: "Clientes" },
 				listaRol: [
 					{ value: 0, label: "Clientes" },
@@ -100,7 +109,7 @@ export default {
         datos: [],
         dato: {
           id: null,
-          identiificacion: null,
+          identificacion: null,
           nombre: null,
           telefono: null,
           direccion: null,
@@ -136,7 +145,7 @@ export default {
 				if (this.numberPages < this.page) {
 					this.page = 1;
 				}
-				lista = rol.filterByRol(lista, this.selectRol.value);
+				//lista = rol.filterByRol(lista, this.selectRol.value);
 				return lista.slice((this.page - 1) * ctn, this.page * ctn);
 				
 				//return this.datos;
@@ -149,7 +158,7 @@ export default {
       addPersona() {
         this.dato = {
           id: 0,
-          identiificacion: '',
+          identificacion: '',
           nombre: '',
           telefono: '',
           direccion: '',
@@ -161,7 +170,7 @@ export default {
         this.dialogAdd = true;
       },
       createPersona(val, msg) {
-        if (!val) {
+        /*if (!val) {
           this.error = "";
           this.textFind = msg;
           this.cargarDatos();
@@ -169,7 +178,7 @@ export default {
         } else {
           this.textFind = "";
           this.error = msg;
-        }
+        }*/
       },
       editPersona(dato) {
         this.dato = JSON.parse(JSON.stringify(dato));

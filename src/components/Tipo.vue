@@ -250,7 +250,11 @@
     return data.filter(d => d.km.value > 0 || d.tiempo.value > 0).length;
   }
 
+  import { Dialog } from 'quasar'
   export default {
+    components:{
+      Dialog
+    },
     data() {
       return {
 				tituloView:'',

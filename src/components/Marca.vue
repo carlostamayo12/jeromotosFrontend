@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { Dialog } from 'quasar'
 import http from "../functions/http"
 import numberPages from "../functions/numberPages"
 import Add from 'components/Dialogs/Marca/Add'
@@ -63,7 +64,7 @@ import View from 'components/Dialogs/Marca/View'
 import Error from 'components/Dialogs/Error'
 export default {
     components:{
-		Add, Edit, View, Error
+		Add, Edit, View, Error, Dialog
 	},	
     data(){
         return {
