@@ -61,7 +61,7 @@
 </template>  
 
 <script>
-	//import Marca from "../components/Marca";
+	
 	import Marca from "../components/Screens/Marca/Index";
 	import Moto from "../components/Screens/Moto/Index";
 	import Orden from "../components/Screens/Orden/Index"
@@ -69,9 +69,6 @@
 	import ServicioTaller from "../components/Screens/ServicioTaller/Index";
 	import TablaMantenimiento from "../components/Screens/TablaMantenimiento/Index"
 	import TipoMoto from "../components/Screens/TipoMoto/Index";
-	
-
-	//import OrdenServicio from "../components/OrdenServicio"*/
 	//import { LocalStorage, SessionStorage } from 'quasar'
 	
 	export default {
