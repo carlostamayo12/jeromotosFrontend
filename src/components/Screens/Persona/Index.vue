@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md fila" style="max-width: 500px; margin-top:80px;">
+  <div class="q-pa-md fila" style="max-width: 600px; margin-top:80px;">
     <q-toolbar class="bg-red text-white rounded-borders">
       <q-toolbar-title>Personas</q-toolbar-title>
       <q-input dark dense standout v-model="textFind" input-class="text-left" class="q-ml-md text-uppercase">
@@ -29,7 +29,7 @@
 			<q-btn @click="addPersona" dense class="glossy q-ml-md" round color="grey-9" icon="add" />
 		</q-toolbar>
 
-    <q-list bordered style="max-width:500px;height: 300px;">
+    <q-list bordered style="max-width:600px;height: 300px;">
       <q-item
         v-for="(dato,i) in listarPersonas"
         :key="i"

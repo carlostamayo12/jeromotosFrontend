@@ -33,7 +33,7 @@
           <q-icon name="info" @click.native="viewMarca(dato)" color="grey-9" />
         </q-item-section>
         <q-item-section side>
-          <q-icon name="build" @click.native="viewMarca(dato)" color="grey-9" />
+          <q-icon name="build" @click.native="editTabla(dato)" color="grey-9" />
         </q-item-section>
       </q-item>
     </q-list>
@@ -62,9 +62,18 @@
       <Ver :dato="dato" />
     </q-dialog>
 
+    <q-dialog v-model="dialogTabla" persistent>
+      <TablaEdit :tipo="dato" />
+    </q-dialog>
+    
     <q-dialog v-model="dialogError">
       <Error :error="error" />
     </q-dialog>
+
+    <q-dialog v-model="dialogSaved">
+      <Saved />
+    </q-dialog>
+
   </div>
 </template>
 
@@ -76,15 +85,18 @@
 	import Add from "./Add";
   import Edit from "./Edit";
   import Ver from "./Ver";
-  import TablaEdit from "../TablaMantenimiento/TablaEdit";
+  import TablaEdit from "../TablaMantenimiento/Edit";
   import Error from "../Error";
+  import Saved from "../Saved";
 
   export default {
     components: {
       Add,
       Edit,
       Ver,
+      TablaEdit,
       Error,
+      Saved,
       Dialog
     },
     data() {
@@ -94,7 +106,9 @@
         dialogAdd: false,
         dialogEdit: false,
 				dialogView: false,
-				dialogError: false,
+        dialogError: false,
+        dialogTabla: false,
+        dialogSaved: false,
         datos: [],
         dato: {
           id: null,
@@ -178,6 +192,10 @@
       viewTipo(dato) {
         this.dato = dato;
         this.dialogView = true;
+      },
+      editTabla(dato){
+        this.dato = JSON.parse(JSON.stringify(dato));
+        this.dialogTabla = true;
       },
       cargarDatos() {
         var ruta = "tipoMoto/findAll";

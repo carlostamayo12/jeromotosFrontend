@@ -16,7 +16,6 @@
 					<q-tab name="moto" label="Moto" />
 					<q-tab name="persona" label="Persona" />
 					<q-tab name="serviciotaller" label="Servicio Taller" />
-					<q-tab name="tablamantenimiento" label="Tabla Mantenmiento" />
 					<q-tab name="tipomoto" label="Tipo Moto" />
 					<q-tab name="ordenservicio" label="Orden Servicio" />
 					<q-route-tab class="text-bold" icon="close" to="/" exact />
@@ -45,10 +44,6 @@
 					<ServicioTaller />
 				</q-tab-panel>
 
-				<q-tab-panel  name="tablamantenimiento">
-					<TablaMantenimiento />
-				</q-tab-panel>
-				
 				<q-tab-panel  name="tipomoto">
 					<TipoMoto />
 				</q-tab-panel>
@@ -67,7 +62,6 @@
 	import Orden from "../components/Screens/Orden/Index"
 	import Persona from "../components/Screens/Persona/Index";
 	import ServicioTaller from "../components/Screens/ServicioTaller/Index";
-	import TablaMantenimiento from "../components/Screens/TablaMantenimiento/Index"
 	import TipoMoto from "../components/Screens/TipoMoto/Index";
 	//import { LocalStorage, SessionStorage } from 'quasar'
 	
@@ -78,9 +72,7 @@
 			Orden,
 			Persona,
 			ServicioTaller,
-			TablaMantenimiento,
 			TipoMoto
-			
 		},
 		data() {
 			return {  

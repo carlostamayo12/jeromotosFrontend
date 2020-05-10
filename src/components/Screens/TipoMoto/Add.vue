@@ -1,4 +1,4 @@
- <template>
+<template>
   <q-card style="min-width: 350px">
     <q-card-section>
       <div class="text-h6">Create Tipo Moto</div>
@@ -19,8 +19,8 @@
       <q-btn flat label="Cancel" v-close-popup />
       <q-btn flat label="Aceptar" :disable="disabledButton"  @click="createTipo" />
     </q-card-actions>
-		<pre>{{listaMarcas}}</pre>
-  </q-card>
+
+	</q-card>
 </template>
 
 <script>
@@ -32,8 +32,7 @@
     props: ["dato"],
     data() {
       return {
-				//selectMarca:{ value:0, label:''},
-				selectMarca: null,
+				selectMarca:{ value:0, label:''},
 				listaMarcas:[],
 				listaServiciosTaller:[]
 			};
@@ -80,19 +79,17 @@
 				var datos = {lista:mapping.tablaInit(this.listaServiciosTaller, id)}
 				http(ruta, datos, response => {
 					if(!response.data.error){
-
+            
 					}
 				}, e=>{
 
 				})
-				
-				//http(){}
 			},
 			cargarMarcas() {
         var ruta = "marca/findAllMarcaMaps";
         http(ruta, null,
           response => {
-            this.listaMarca = response.data.datos;
+            this.listaMarcas = response.data.datos;
           },
           e => {
             //this.error = e.message;

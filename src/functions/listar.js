@@ -1,14 +1,18 @@
 const listar = {
-    servicioTaller:(ctn, datos, textFind, numberPages, page)=>{
-		//const ctn = 5;
-		let lista = datos.filter(
-			d => d.nombre.indexOf(textFind.toUpperCase()) > -1
-		);
-		if (numberPages < page) {
-			page = 1;
+	kilometraje: () => {
+		var obj = [];
+		for (let i = 0; i <= 20; i++) {
+			obj.push({ value: i*1000, label: (i * 1000).toString() });
 		}
-		return lista.slice((page - 1) * ctn, page * ctn);
+		return obj;
+	},
+	tiempo: () => {
+		var obj = [];
+		for (let i = 0; i <= 24; i++) {
+			obj.push({ value: i, label: i.toString() });
 		}
+		return obj;
+	}
 }
 
 export default listar
