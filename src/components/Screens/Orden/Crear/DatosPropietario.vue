@@ -1,10 +1,11 @@
 <template>
   <q-card>
-    <q-card-section style="background: #24292e" class="text-white q-py-none">
+    <q-card-section style="background: #000; border: 1px solid #000" class="text-white q-py-none">
       <div  class="text-overline q-py-none">Informacion Propietario</div>
 		</q-card-section>
 		<q-card-section class="row">
-      <q-input
+      
+			<q-input
 				readonly
 				dense
 				v-model.trim="persona.nombre"
@@ -13,7 +14,6 @@
 				stack-label
 				label="Propietario"
 			/>
-
 			<q-input
 				readonly
 				color="black"

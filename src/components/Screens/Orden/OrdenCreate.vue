@@ -4,7 +4,7 @@
 		<Cabecera 
 			class="my-card"
 			:dato="dato" 
-			:selectTecnico="selectTencico" 
+			:selectTecnico="selectTecnico" 
 			:listaTecnicos="listaTecnicos"    
 			:fechaEntregaEstimada="fechaEntregaEstimada"/> 
 		
@@ -14,43 +14,56 @@
 				:dato="dato"
 				:ultimo="ultimo"
 			/>
-			
-			<DatosPersona
+			<DatosPropietario
 				class="my-card col"
 				:persona="persona" 
-
 			/> 
-		
 		</div> 
-		
 
-    <q-card class="my-card">
-      <q-card-section class="bg-grey-8 text-white">
-        <div class="text-h6">Our Changing Planet</div>
-        <div class="text-subtitle2">by John Doe</div>
-      </q-card-section>
-
-      <q-card-actions vertical align="center">
-        <q-btn flat>Action 1</q-btn>
-        <q-btn flat>Action 2</q-btn>
-      </q-card-actions>
-    </q-card>
-  </div>
+		<div class="row my-card">
+			<ServiciosSolicitados
+				class="my-card col q-mr-md"
+				:servicio="servicio"
+				:listaServicioTaller="listaServicioTaller"
+				:teal="teal"
+				
+			/>
+			<ServiciosSolicitados
+				class="my-card col q-mr-md"
+				:servicio="servicio"
+				:listaServicioTaller="listaServicioTaller"
+				:teal="teal"
+				
+			/> 
+		</div> 
+	
+	</div>
 </template>
 
 <script>
 import http from '../../../functions/http'
 import Cabecera from './Crear/Cabecera'
 import DatosMoto from './Crear/DatosMoto'
-import DatosPersona from './Crear/DatosPersona'
+import DatosPropietario from './Crear/DatosPropietario'
+import ServiciosSolicitados from './Crear/ServiciosSolicitados'
+import Solicitudes from './Crear/Solicitudes'
+
 export default {
 	components:{
 		Cabecera,
 		DatosMoto,
-		DatosPersona
+		DatosPropietario,
+		ServiciosSolicitados,
+		Solicitudes
 	},
 	data(){
 		return {
+			servicio:{
+				id: null,
+				nombre: null
+			},
+			teal: true,
+			listaServicioTaller:[],
 			selectTecnico: {value:0, label: ""},
 			listaTecnicos:[],
 			fechaEntregaEstimada:'31/03/2200',
@@ -131,7 +144,6 @@ export default {
 	}
 	.my-card{
 		width: 100%;
-		border-style: solid;
-  	border-color: black;
+		/*border: 1px solid black;*/
 	}
 </style>
