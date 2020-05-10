@@ -6,7 +6,8 @@
 			:dato="dato" 
 			:selectTecnico="selectTecnico" 
 			:listaTecnicos="listaTecnicos"    
-			:fechaEntregaEstimada="fechaEntregaEstimada"/> 
+			:fechaEntregaEstimada="fechaEntregaEstimada"
+			:km="km"/> 
 		
 		<div class="row">
 			<DatosMoto
@@ -62,6 +63,7 @@ export default {
 				id: null,
 				nombre: null
 			},
+			km:'',
 			teal: true,
 			listaServicioTaller:[],
 			selectTecnico: {value:0, label: ""},

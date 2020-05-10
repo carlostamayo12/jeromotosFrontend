@@ -1,7 +1,7 @@
 <template>
   <q-card style="min-width: 350px">
     <q-card-section>
-      <div class="text-h6">Edit ServicioTaller</div>
+      <div class="text-h6">Editar ServicioTaller</div>
     </q-card-section>
     <q-card-section class="q-pt-none">
       <q-input
@@ -9,14 +9,13 @@
         v-model.trim="dato.nombre"
         class="text-uppercase"
         autofocus
-        stack-label
-        label="ServicioTaller"
+        dense
         maxlength="20"
       />
     </q-card-section>
     <q-card-actions align="right" class="text-black">
       <q-btn flat label="Cancel" v-close-popup />
-      <q-btn flat label="Aceptar" :disable="disabledButton" @click="updateMarca()" />
+      <q-btn flat label="Aceptar" :disable="disabledButton" @click="updateServiciosTaller()" />
     </q-card-actions>
   </q-card>
 </template>
@@ -35,7 +34,7 @@
         return disabled.servicioTaller(this.dato);
       },
       methods: {
-        updateMarca() {
+        updateServiciosTaller() {
           var ruta = "ServicioTaller/update";
           var datos = {
             id: this.dato.id,

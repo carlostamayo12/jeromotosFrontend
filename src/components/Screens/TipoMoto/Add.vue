@@ -4,7 +4,6 @@
       <div class="text-h6">Create Tipo Moto</div>
     </q-card-section>
     <q-card-section class="q-pt-none">
-      <q-select dense label="MARCA" v-model="selectMarca" :options="listaMarcas" style="padding: 0" />
       <q-input
         color="black"
         v-model.trim="dato.referencia"
@@ -14,7 +13,9 @@
         label="Referencia"
         maxlength="20"
       />
+      <q-select color="black" label="MARCA" v-model="selectMarca" :options="listaMarcas" style="padding: 0" />
     </q-card-section>
+    
     <q-card-actions align="right" class="text-black">
       <q-btn flat label="Cancel" v-close-popup />
       <q-btn flat label="Aceptar" :disable="disabledButton"  @click="createTipo" />
@@ -62,7 +63,7 @@
           datos,
           response => {
             if (!response.data.error) {
-							this.createTabla(response.data.datos.id);
+              this.createTabla(response.data.datos.id);
 							this.$emit("click", false, response.data.datos.referencia);
 							
             } else {
@@ -74,9 +75,9 @@
           }
         );
 			},
-			createTabla(id){
-				var ruta = ''
-				var datos = {lista:mapping.tablaInit(this.listaServiciosTaller, id)}
+			createTabla(tipo_motoId){
+				var ruta = 'tablamantenimiento/create'
+				var datos = {lista:mapping.tablaInit(this.listaServiciosTaller, tipo_motoId)}
 				http(ruta, datos, response => {
 					if(!response.data.error){
             

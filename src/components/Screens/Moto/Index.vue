@@ -145,13 +145,14 @@ export default {
 				http(ruta, datos,  )
 			},
 			addMoto(){
+				this.textFind = ''
 				this.dato ={
 					id: 0,
 					placa: '',
 					color: '',
 					km_promedio: null,
 					tipo_motoId: null,
-					propietarioId: null,
+					propietarioId: '',
 					tipo_moto: {
 						id: null,
 						referencia: null,
@@ -165,8 +166,6 @@ export default {
         this.dialogAdd = true
 			},
 			createMoto(val, msg){
-				//console.log('val :' + val)
-				//console.log('msg :' + msg)
 				if(val === 0){
 					this.textFind = msg
 					this.cargarDatos()

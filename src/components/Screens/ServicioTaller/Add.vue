@@ -1,7 +1,7 @@
 <template>
   <q-card style="min-width: 350px">
 		<q-card-section>
-			<div class="text-h6">Create Servicios Taller</div>
+			<div class="text-h6">Crear Servicio Taller</div>
 		</q-card-section>
 		<q-card-section class="q-pt-none">
 					<q-input
@@ -9,8 +9,7 @@
 						v-model.trim="dato.nombre"
 						class="text-uppercase"
 						autofocus
-						stack-label
-						label="Servicio Taller"
+						dense
 						maxlength="20"
 					/>
 				</q-card-section>

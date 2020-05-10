@@ -1,9 +1,20 @@
 <template>
   <q-card>
-    <q-card-section style="background: #24292e" class="text-white q-py-none">
+    <q-card-section style="background: #000" class="text-white q-py-none">
       <div class="text-overline q-py-none">Orden # 0001</div>
     </q-card-section>
     <q-card-section class="row q-pt-xs">
+      
+      <q-input dense v-model="date" color="black">
+        <template v-slot:append>
+          <q-icon name="search" class="cursor-pointer">
+            <q-popup-proxy transition-show="scale" transition-hide="scale">
+              <q-date color="red" v-model="date" mask="YYYY-MM-DD HH:mm" />
+            </q-popup-proxy>
+          </q-icon>
+        </template>
+      </q-input>
+      
       <q-input
         readonly
         color="black"
@@ -23,17 +34,7 @@
         :options="listaTecnicos"
         style="padding: 0"
       />
-      <q-input
-        readonly
-        color="black"
-        dense
-        v-model.trim="dato.placa"
-        class="q-mr-md col"
-        autofocus
-        stack-label
-        label="Placa"
-      />
-
+      
       <q-input dense v-model="date" color="black">
         <template v-slot:prepend>
           <q-icon name="event" class="cursor-pointer">
@@ -67,7 +68,7 @@
 
 <script>
   export default {
-    props: ["dato", "selecTecnico", "listaTecnicos"],
+    props: ["dato", "selectTecnico", "listaTecnicos", "km"],
     data() {
       return {
         date: "2019-02-01 12:44"

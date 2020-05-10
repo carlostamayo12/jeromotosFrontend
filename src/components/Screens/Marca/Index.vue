@@ -46,11 +46,11 @@
       />
     </div>
 
-    <q-dialog v-model="dialogAdd">
+    <q-dialog v-model="dialogAdd" persistent>
       <Add :dato="dato" @click="createMarca" />
     </q-dialog>
 
-    <q-dialog v-model="dialogEdit">
+    <q-dialog v-model="dialogEdit" persistent>
       <Edit :dato="dato" @click="updateMarca" />
     </q-dialog>
 

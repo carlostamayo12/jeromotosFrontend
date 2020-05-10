@@ -1,12 +1,12 @@
 const mapping = {
-	tablaInit: (data) => {
+	tablaInit: (data, tipo_motoId) => {
 		return data.map(item => {
 			return {
 				id: 0,
 				kilometraje: 0,
 				tiempo: 0,
 				estado: 0,
-				tipo_motoId: 0,
+				tipo_motoId: tipo_motoId,
 				servicioId: item.id
 			}
 		})
@@ -29,6 +29,15 @@ const mapping = {
 				servicioId: item.servicioId,
 				tipo_motoId: item.tipo_motoId,
 				adminId: adminId
+			}
+		})
+	},
+	tablaContador: (data, motoId) =>{
+		return data.map(item => {
+			return {
+				id: 0,
+				servicioId:item.servicioTaller.id,
+				motoId: motoId
 			}
 		})
 	}

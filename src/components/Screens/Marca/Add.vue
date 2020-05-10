@@ -1,7 +1,7 @@
 <template>
   <q-card style="min-width: 350px">
     <q-card-section>
-      <div class="text-h6">Create Marca</div>
+      <div class="text-h6">Crear Marca</div>
     </q-card-section>
     <q-card-section class="q-pt-none">
       <q-input
@@ -9,14 +9,13 @@
         v-model.trim="dato.nombre"
         class="text-uppercase"
         autofocus
-        stack-label
-        label="Marca"
+        dense
         maxlength="20"
       />
     </q-card-section>
     <q-card-actions align="right" class="text-black">
-      <q-btn color="red" label="Cancel" v-close-popup />
-      <q-btn color="red" label="Aceptar" :disable="disabledButton" @click="createMarca" />
+      <q-btn flat label="Cancel" v-close-popup />
+      <q-btn flat label="Aceptar" :disable="disabledButton" @click="createMarca" />
     </q-card-actions>
   </q-card>
 </template>

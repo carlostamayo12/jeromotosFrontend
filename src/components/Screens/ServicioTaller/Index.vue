@@ -40,11 +40,11 @@
 				/>
 			</div>
 	
-		<q-dialog v-model='dialogAdd'>
+		<q-dialog v-model='dialogAdd' persistent="">
 			<Add :dato='dato' @click="createServiciosTaller" />
 		</q-dialog>
 
-		<q-dialog v-model='dialogEdit'>
+		<q-dialog v-model='dialogEdit' persistent="">
 			<Edit :dato='dato' @click="updateServiciosTaller" />
 		</q-dialog>
 

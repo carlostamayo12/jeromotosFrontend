@@ -9,16 +9,15 @@
         v-model="dato.nombre"
         color="black"
         class="text-uppercase"
-        autofocus
+        autofocus 
         readonly
-        stack-label
-        label="Marca"
+        dense
         maxlength="20"
       />
     </q-card-section>
 
     <q-card-actions align="right" class="text-black">
-      <q-btn color="red" label="Cancel" v-close-popup />
+      <q-btn flat label="Ok" v-close-popup />
     </q-card-actions>
   </q-card>
 </template>

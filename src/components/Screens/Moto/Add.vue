@@ -10,6 +10,7 @@
         v-model.trim="dato.placa"
         class="text-uppercase col q-mr-md"
         autofocus
+        mask="AAA##A"
         stack-label
         label="Placa"
         dense
@@ -41,7 +42,7 @@
 			class="col q-mx-md"
 			dense 
 			v-model="selectTipo" 
-			:options="listarTipos" 
+			:options="listarTipos"
 			/>
     </q-card-section>
     
@@ -69,7 +70,7 @@
         </q-item>
       </q-list>
     </q-card-section>
-    
+    <pre>{{contador}}</pre>
 		<q-card-actions align="right" class="text-black q-mb-none">
       <q-btn label="Cancel" color="red" v-close-popup />
       <q-btn label="Aceptar" color="red" icon-right="send" :disable="disabledButton" @click="createMoto" />
@@ -80,6 +81,7 @@
 <script>
   import http from "../../../functions/http";
   import disabled from "../../../functions/disabled";
+  import mapping from "../../../functions/mapping";
 
   export default {
     props: ["dato"],
@@ -93,7 +95,9 @@
         persona: {
           id: 0,
           nombre: ""
-        }
+        },
+        listaTablaMantenimiento:[],
+        contador:[]
       };
     },
     computed: {
@@ -150,6 +154,7 @@
     },
     methods: {
       createMoto() {
+        var self = this
         var ruta = 'moto/create';
         var datos = {
           id: 0,
@@ -159,11 +164,9 @@
 					propietarioId: this.persona.id,
 					adminId: 1
 				};
-				http(
-          ruta,
-          datos,
-          response => {
+				http(ruta, datos, response => {
             if (!response.data.error) {
+              self.cargarTablaMantenimiento(response.data.datos.id,  response.data.datos.tipo_motoId)
               this.$emit("click", 0, response.data.datos.placa);
             } else {
               this.$emit("click", 1, response.data.mensaje);
@@ -223,7 +226,26 @@
           },
           e => {}
         );
-      }
+      },
+      cargarTablaMantenimiento(motoId, tipoMotoId){
+        var ruta = "tablamantenimiento/findByTipoAll"
+				var datos = {tipoMoto: tipoMotoId}
+        
+        http(ruta, datos, response => {
+            var datos = { lista: mapping.tablaContador(response.data.datos, motoId)}
+            var ruta = "contador/create"
+            //var datos = {lista: this.contador}
+            http(ruta, datos, response => {
+              if(response.data.error){
+
+              }
+            }, e =>{
+
+            })
+        }, e => {
+					console.log(e.message)
+				})
+			}
     }
   };
 </script>

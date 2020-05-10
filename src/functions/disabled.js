@@ -34,13 +34,12 @@ const disabled = {
 	moto: (dato) => {
 		let placa = JSON.stringify(dato.placa.toString().trim().length > 0)
 		let color = JSON.stringify(dato.color.toString().trim().length > 0)
+		
 		if(placa && color){
 			return false
 		}else{
 			return true
 		}
-		
-
 	}
 
 
