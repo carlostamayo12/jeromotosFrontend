@@ -70,7 +70,7 @@
         </q-item>
       </q-list>
     </q-card-section>
-    <pre>{{contador}}</pre>
+    
 		<q-card-actions align="right" class="text-black q-mb-none">
       <q-btn label="Cancel" color="red" v-close-popup />
       <q-btn label="Aceptar" color="red" icon-right="send" :disable="disabledButton" @click="createMoto" />
@@ -234,7 +234,6 @@
         http(ruta, datos, response => {
             var datos = { lista: mapping.tablaContador(response.data.datos, motoId)}
             var ruta = "contador/create"
-            //var datos = {lista: this.contador}
             http(ruta, datos, response => {
               if(response.data.error){
 

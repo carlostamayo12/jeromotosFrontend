@@ -32,7 +32,7 @@
 						dense
 						v-model="ultimo"
 						color="black"
-						class="text-uppercase col"
+						class="text-uppercase col q-mr-md"
 						stack-label
 						label="Ultimo Km"
 					/>

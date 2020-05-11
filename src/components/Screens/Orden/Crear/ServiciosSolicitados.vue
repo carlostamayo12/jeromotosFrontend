@@ -12,10 +12,14 @@
         style="margin: 10px 16px;"
       >
         <q-item-section>
-          <q-item-label>{{servicio.nombre}}</q-item-label>
+          <q-item-label>{{servicio.servicioTaller.nombre}}</q-item-label>
         </q-item-section>
         <q-item-section side>
-          <q-checkbox v-model="teal" color="black" />
+          <q-checkbox
+              color="black"
+							:val="servicio.servicioTaller.id"
+							v-model="checkedSolicitados"
+						/>
         </q-item-section>
       </q-item>
     </q-list>
@@ -24,7 +28,7 @@
 
 <script>
   export default {
-    props: ['servicio', 'listaServicioTaller', 'teal'],
+    props: ['servicio', 'listaServicioTaller', 'checkedSolicitados'],
     data() {
       return {};
     }

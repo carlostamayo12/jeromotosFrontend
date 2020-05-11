@@ -8,9 +8,9 @@
 			<q-input
 				readonly
 				dense
-				v-model.trim="persona.nombre"
+				v-model.trim="dato.persona.nombre"
 				color="black"
-				class="text-capitalize col"
+				class="text-capitalize col-5 q-mr-md"
 				stack-label
 				label="Propietario"
 			/>
@@ -18,15 +18,15 @@
 				readonly
 				color="black"
 				dense
-				v-model.trim="persona.telefono"
-				class=" q-mr-md col"
+				v-model.trim="dato.persona.telefono"
+				class=" q-mr-md col-2"
 				stack-label
 				label="Telefono"
 			/>
 			<q-input
 				readonly
 				dense
-				v-model="persona.direccion"
+				v-model="dato.persona.direccion"
 				color="black"
 				class="col"
 				stack-label
@@ -40,7 +40,7 @@
 <script>
 	
 	export default {
-		props:['persona'],
+		props:['dato'],
 		data() {
       return {};
     }
