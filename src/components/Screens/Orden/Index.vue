@@ -18,7 +18,7 @@
 						clickable
 						v-close-popup
 						tabindex="0"
-						@click="selectedActivity(selectActivity)"
+						@click ="selectedActivity(selectActivity)"
 					>
 						<q-item-section>
 							<q-item-label>{{selectActivity.label}}</q-item-label>
@@ -67,4 +67,3 @@
 		margin-right: auto;
 	}
 </style>
-

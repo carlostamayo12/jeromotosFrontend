@@ -8,7 +8,7 @@
 						readonly
 						color="black"
 						dense
-						v-model.trim="dato.placa"
+						v-model.trim="orden.moto.placa"
 						class="text-uppercase q-mr-md col"
 						autofocus
 						stack-label
@@ -19,7 +19,7 @@
 					<q-input
 						readonly
 						dense
-						v-model="dato.km_promedio"
+						v-model="orden.moto.km_promedio"
 						color="black"
 						class="text-uppercase col q-mr-md"
 						stack-label
@@ -40,7 +40,7 @@
 				<q-input
 						readonly
 						dense
-						v-model="dato.color"
+						v-model="orden.moto.color"
 						color="black"
 						class="text-uppercase col q-mr-md"
 						stack-label
@@ -52,7 +52,7 @@
 						readonly
 						color="black"
 						dense
-						v-model.trim="dato.tipo_moto.referencia"
+						v-model.trim="orden.moto.tipo_moto.referencia"
 						class="text-uppercase q-mr-md col"
 						autofocus
 						stack-label
@@ -62,7 +62,7 @@
 					<q-input
 						readonly
 						dense
-						v-model="dato.tipo_moto.marca.nombre"
+						v-model="orden.moto.tipo_moto.marca.nombre"
 						color="black"
 						class="text-uppercase q-mr-md col"
 						stack-label
@@ -76,7 +76,7 @@
 <script>
 	
 	export default {
-		props:['dato', 'ultimo'],
+		props:['orden', 'ultimo'],
 		data() {
       return {};
     }

@@ -20,6 +20,11 @@
 							:val="servicio.servicioTaller.id"
 							v-model="checkedSolicitados"
 						/>
+            <q-checkbox
+              color="black"
+							:val="servicio.servicioTaller.id"
+							v-model="checkedSolicitados"
+						/>
         </q-item-section>
       </q-item>
     </q-list>

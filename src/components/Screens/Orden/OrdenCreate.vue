@@ -5,9 +5,9 @@
         <div class="text-overline q-py-none">Orden #000{{orden.id}}</div>
       </q-card-section>
       <q-card-section class="row q-pt-xs">
-        <q-btn round color="red" icon="search" @click="findMoto" />
+        <q-btn round color="red" icon="search" @click="findMoto"  />
 
-        <q-select
+        <q-select v-if="dato.id !== 0"
           label="Tecnico"
           color="black"
           dense
@@ -17,7 +17,7 @@
           style="max-width: 300px"
         />
 
-        <q-input dense v-model="date" color="black">
+        <!--<q-input dense v-model="date" color="black">
           <template v-slot:prepend>
             <q-icon name="event" class="cursor-pointer">
               <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -33,12 +33,12 @@
               </q-popup-proxy>
             </q-icon>
           </template>
-        </q-input>
+        </q-input>-->
 
-        <q-input
+        <q-input v-if="dato.id !== 0"
           color="black"
           dense
-          v-model.trim="km"
+          v-model.trim="orden.kilometraje"
           class="q-mx-lg col"
           autofocus
 					mask="#####"
@@ -47,7 +47,7 @@
 					style="max-width: 100px"
         />
 
-				 <q-btn color="red" :disable="disabledButton" icon="save" @click="createOrden" label="Guardar" />
+				 <q-btn color="red" v-if="dato.id !== 0" :disable="disabledButton" icon="save" @click="createOrden" label="Guardar" />
       </q-card-section>
     </q-card>
 
@@ -75,14 +75,14 @@
       </q-card>
     </q-dialog>
     
-		<div class="row">
+		<div class="row" v-if="dato.id !== 0">
       <DatosMoto class="my-card col q-mr-md" :dato="dato" :ultimo="ultimo" />
       <DatosPropietario class="my-card col" :dato="dato" />
     </div>
 
-    <div class="row my-card q-mt-none q-py-none">
+    <div class="row my-card q-mt-none q-py-none" v-if="dato.id !== 0">
       <!-- Lista Servicios -->
-			<q-card class="q-mt-lg my-card col" style="width:30%" v-if="listaServicioTaller.length > 0">
+			<q-card class="q-mt-lg my-card col" style="width:30%" >
         <q-list bordered>
           <p class="bg-black text-white q-py-xs q-pl-md q-mb-none text-overline">Servicios Taller</p>
           <q-item
@@ -110,7 +110,7 @@
 
 			<q-card class="q-mt-lg my-card col">
 				<q-card-section>
-					<pre>{{checkedSolicitados}}</pre>
+          Solicitudes
 				</q-card-section>
 			</q-card>
 
@@ -128,6 +128,7 @@
 <script>
   import { Dialog } from "quasar";
   import http from "../../../functions/http";
+  import mapping from "../../../functions/mapping";
   import Cabecera from "./Crear/Cabecera";
   import DatosMoto from "./Crear/DatosMoto";
   import DatosPropietario from "./Crear/DatosPropietario";
@@ -151,17 +152,19 @@
       return {
 				orden:{
 					id: 0,
-					fechaIngreso: '',
-					fechaEntregaEstimada: '',
-					fechaSalida: '',
-					kilometraje: 0,
+					fechaIngreso: 0,
+					fechaEntregaEstimada: 0,
+					fechaSalida: 0,
+					kilometraje: '',
 					kmTotal: 0,
 					solicitudes: '',
 					observaciones: '',
 					costoServicio: 0,
-					costoRepuestos: 0,
+          costoRepuestos: 0,
+          estado:'Iniciado',
 					motoId: 0,
-					tecnicoId: 0
+          tecnicoId: 0, 
+          adminId: 1
 				},
 				error: "",
         informacion: "",
@@ -178,6 +181,7 @@
         km: '',
         teal: true,
         listaServicioTaller: [],
+        listaServiciosEnvio: [],
         selectTecnico: { value: 0, label: "" },
         listaTecnicos: [],
         fechaEntregaEstimada: "31/03/2200",
@@ -208,11 +212,11 @@
 			disabledButton: function (){
 				if(this.dato.id > 0 && this.date.length > 0 && 
 					 this.checkedSolicitados.length > 0 && 
-					 this.km.length > 0 && this.selectTecnico.value > 0){
+					 this.orden.kilometraje.length > 0 && this.selectTecnico.value > 0){
 					return false
 				}
-				return true
-				
+				//return true
+				return false
 			}
 		},
     beforeMount() {
@@ -234,7 +238,31 @@
         this.dialogFind = false;
       },
       cargarDatos() {},
-			createOrden(){},
+			createOrden(){
+        
+        this.orden.fechaIngreso = Number.parseFloat((this.$moment().format("X"))/(3600*24)).toFixed(5)
+        this.orden.motoId = JSON.parse(JSON.stringify(this.dato.id))
+        this.orden.tecnicoId = JSON.parse(JSON.stringify(this.selectTecnico.value))
+        this.listaServiciosEnvio = mapping.serviciosSolicitados(this.listaServicioTaller, this.checkedSolicitados, this.orden.id)
+
+        var datos = {orden: this.orden, lista: this.listaServiciosEnvio }
+        var ruta = 'ordenEntrada/create'
+        http(ruta, datos, response => {
+          if(!response.data.error){
+            this.ultimaOrden()
+            this.dato = mapping.datoMotoOrdenNuevo(this.dato)
+            this.orden = mapping.datoOrdenNew(this.orden)
+          }else{
+            this.error = response.data.mensaje
+            this.diaogError = true
+          }  
+        },e=>{
+            this.error = e.message
+            this.diaogError = true
+        })
+      
+      
+      },
       existeOrden(motoId) {
         var ruta = "ordenEntada/Exist";
         var datos = { motoId: motoId };
@@ -308,7 +336,6 @@
 						this.error = e.message
 				})
 			},
-
       cargarlistaTecnicos() {
         var ruta = "persona/tecnicoMap";
         http(

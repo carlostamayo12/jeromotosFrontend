@@ -1,395 +1,297 @@
 <template>
-	<div>	
-	<!--Columna 1-->
-		<div class="float-left">
-			<q-card style="max-width: 400px" class="q-mt-lg">
-				<p class="bg-black text-white q-py-xs q-pl-md q-mb-none rounded-borders">Orden# 00001</p>
-				<q-card-section class="row">
-					<q-input
-						readonly
-						color="black"
-						dense
-						v-model.trim="dato.placa"
-						class="text-uppercase q-mr-md col"
-						autofocus
-						stack-label
-						label="Placa"
-						style="max-width:65px"
-					/>
-					<q-btn round icon="search" color="red" size="xs" @click="dialogPlaca = true" />
+  <div class="q-pa-md row items-start q-gutter-md">
+    <q-card class="my-card">
+      <q-card-section style="background: #000" class="q-py-none text-white">
+        <div class="text-overline q-py-none col">Orden # {{orden.id}}</div>
+      </q-card-section>
+      <q-card-section class="row q-pt-xs">
+        <q-select
+          label="Orden Servicio"
+          color="black"
+          dense
+          class="q-mx-md col"
+          v-model="selectOrden"
+          :options="listaSelectOrden"
+          @input="selectedOrden"
+          style="max-width: 300px"
+        />
+        <q-input v-if="orden.id !== 0"
+          label="Tecnico"
+          color="black"
+          dense
+          readonly=""
+          class="q-mx-md col"
+          v-model="orden.tecnico.nombre"
+          style="max-width: 300px"
+        />
 
-					<q-select
-						@input="selectedTecnico"
-						label="Tecnico"
-						color="black"
-						dense
-						class="text-uppercase q-mx-md col"
-						v-model="selectTecnico"
-						:options="listaTecnicos"
-						style="padding: 0"
-					/>
+        <q-input v-if="orden.id !== 0"
+          label="Fecha Ingreso"
+          color="black"
+          dense
+          readonly=""
+          class="q-mx-md col"
+          v-model="orden.fechaIngreso"
+          style="max-width: 300px"
+        />
+
+         <q-input v-if="orden.id !== 0"
+          label="Kilometraje"
+          color="black"
+          dense
+          readonly=""
+          class="q-mx-md col"
+          v-model="orden.kilometraje"
+          style="max-width: 300px"
+        />
+
+        <q-input v-if="orden.id !== 0"
+          label="Costo Repuestos"
+          color="black"
+          dense
+          mask="#######"
+          class="q-mx-md col"
+          v-model="orden.costoRepuestos"
+          style="max-width: 300px"
+        />
+
+        <q-input v-if="orden.id !== 0"
+          label="Costo Servicio"
+          color="black"
+          dense
+          mask="#######"
+          class="q-mx-md col"
+          v-model.trim="orden.costoServicio"
+          style="max-width: 300px"
+        />
+
+        <q-btn color="red" v-if="orden.id !== 0"  icon="save" @click="finalizarOrden" label="Guardar" />
+
+
+      </q-card-section>
+    </q-card>
+    
+    <div class="row" v-if="orden.id !== 0">
+      <DatosMoto class="my-card col q-mr-md" :orden="orden" :ultimo="ultimo" />
+      <DatosPropietario class="my-card col" :orden="orden.moto" />
+    </div>
+  
+    	<q-card class="q-mt-lg my-card col" style="width:30%" v-if="orden.id !== 0">
+        <q-list bordered>
+          <p class="bg-black text-white q-py-xs q-pl-md q-mb-none text-overline">Servicios Taller</p>
+          <q-item
+            dense
+            class="q-my-none q-pa-none"
+            v-for="(servicio,i) in listaServicioTaller"
+            :key="i"
+            clickable
+            v-ripple
+            style="margin: 10px 16px;"
+          >
+            <q-item-section>
+              <q-item-label>{{servicio.servicioTaller.nombre}}</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-checkbox
+                disable
+                color="black"
+                :val="servicio.servicioTaller.id"
+                v-model="checkedSolicitados"
+              />
+            </q-item-section>
+            <q-item-section side>
+              <q-checkbox
+                color="black"
+                :val="servicio.servicioTaller.id"
+                v-model="checkedRealizados"
+              />
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card>
+
+			<q-card class="q-mt-lg my-card col">
+				<q-card-section>
+          Solicitudes
 				</q-card-section>
-				<q-card-section class="row">
-					<q-input
-						readonly
-						color="black"
-						dense
-						v-model.trim="fechaEntregaEstimada"
-						class="text-uppercase q-mr-none col"
-						autofocus
-						stack-label
-						label="Fecha Entrega"
-						style="max-width:150px"
-					/>
-					<q-btn round icon="timer" color="red" size="xs" />
-					<q-input
-						color="black"
-						dense
-						v-model.trim="km"
-						class="text-uppercase q-mx-lg col"
-						autofocus
-						stack-label
-						label="Kilometraje"
-						
-					/>
-					
-				</q-card-section>
-			<q-card-actions align="center" class="text-black">
-					<q-btn style="width:150px" label="Aceptar" color="red" />
-				</q-card-actions>
 			</q-card>
 
-			<q-card style="max-width: 400px" class="q-mt-lg">
-				<p class="bg-black text-white q-py-xs q-pl-md q-mb-none rounded-borders">Informacion Motocicleta</p>
 
-				<q-card-section class="row">
-					<q-input
-						readonly
-						color="black"
-						dense
-						v-model.trim="dato.placa"
-						class="text-uppercase q-mr-md col"
-						autofocus
-						stack-label
-						label="Placa"
-						style="max-width:80px"
-					/>
 
-					<q-input
-						readonly
-						dense
-						v-model="dato.km_promedio"
-						color="black"
-						class="text-uppercase col q-mr-md"
-						stack-label
-						label="Km promedio"
-						style="max-width:100px"
-					/>
+    <q-dialog v-model="dialogError">
+      <Error :error="error" />
+    </q-dialog>
 
-					<q-input
-						readonly
-						dense
-						v-model="ultimo"
-						color="black"
-						class="text-uppercase col"
-						stack-label
-						label="Ultimo Km"
-					/>
-				</q-card-section>
-
-				<q-card-section class="q-pt-none row">
-					<q-input
-						readonly
-						dense
-						v-model="dato.color"
-						color="black"
-						class="text-uppercase col q-mr-md"
-						stack-label
-						label="Color"
-						style="max-width:100px"
-					/>
-
-					<q-input
-						readonly
-						color="black"
-						dense
-						v-model.trim="dato.tipo_moto.referencia"
-						class="text-uppercase q-mr-md col"
-						autofocus
-						stack-label
-						label="Referencia"
-					/>
-
-					<q-input
-						readonly
-						dense
-						v-model="dato.tipo_moto.marca.nombre"
-						color="black"
-						class="text-uppercase col"
-						stack-label
-						label="Marca"
-					/>
-				</q-card-section>
-
-				<q-card-section>
-					<q-input
-						readonly
-						dense
-						v-model.trim="persona.nombre"
-						color="black"
-						class="text-uppercase"
-						stack-label
-						label="Propietario"
-					/>
-				</q-card-section>
-
-				<q-card-section class="q-pt-none row">
-					<q-input
-						style="max-width:100px"
-						readonly
-						color="black"
-						dense
-						v-model.trim="persona.telefono"
-						class="text-uppercase q-mr-md col"
-						autofocus
-						stack-label
-						label="Telefono"
-					/>
-					<q-input
-						readonly
-						dense
-						v-model="persona.direccion"
-						color="black"
-						class="col"
-						stack-label
-						label="Direccion"
-					/>
-				</q-card-section>
-			</q-card>
-		</div>
-
-		<!--Columna 2-->
-		<div class="float-left q-mx-md" >
-			<q-card class="q-mt-lg">
-				<q-list bordered style="max-width:580px;">
-					<p class="bg-black text-white q-py-xs q-pl-md q-mb-none rounded-borders">Servicios Taller </p>
-					<q-item class="q-my-none" v-for="(servicio,i) in listaServicioTaller" :key="i" clickable v-ripple style="margin: 10px 16px;">
-						<q-item-section >
-							<q-item-label>{{servicio.nombre}}</q-item-label>
-						</q-item-section>
-						<q-item-section side>
-							<q-checkbox v-model="teal" color="black" />
-						</q-item-section>
-					</q-item>
-				</q-list>
-			</q-card>
-		</div>
-
-		<!--Columna 3-->
-		<div class="float-left q-mx-md">
-			<q-card style="min-width: 500px" class="q-mt-lg">
-				<p class="bg-black text-white q-py-xs q-pl-md q-mb-none rounded-borders">Solicitudes</p>
-				<q-card-section>
-					<q-input
-						dense
-						type="text-area"
-						color="black"
-						v-model="solicitud"
-						class="text-uppercase q-mr-md"
-						autofocus
-						stack-label
-						label="Solicitud 1"
-					/>
-				</q-card-section>
-				<q-card-section>
-					<q-input
-						dense
-						type="text-area"
-						color="black"
-						v-model="solicitud"
-						class="text-uppercase q-mr-md"
-						autofocus
-						stack-label
-						label="Solicitud 2"
-					/>
-				</q-card-section>
-				<q-card-section>
-					<q-input
-						type="text-area"
-						color="black"
-						v-model="solicitud"
-						class="text-uppercase q-mr-md"
-						autofocus
-						stack-label
-						label="Solicitud 3"
-					/>
-				</q-card-section>
-			</q-card>
-		</div>
-		
-		<!--Dialog Placa-->
-		<q-dialog v-model="dialogPlaca" @escape-key="dialogPlaca = false">
-			
-			<q-card style="min-width: 350px">
-				<q-card-section>
-					<div class="text-h6">Crear Marca</div>
-				</q-card-section>
-				<q-card-section class="q-pt-none">
-					<q-input
-						color="black"
-						v-model.trim="placa"
-						class="text-uppercase"
-						autofocus
-						stack-label
-						label="Placa"
-						maxlength="6"
-					/>
-				</q-card-section>
-
-				<q-card-actions align="right" class="text-black">
-					<q-btn flat label="Cancel" v-close-popup />
-					<q-btn flat label="Aceptar" @click="findPlaca" />
-				</q-card-actions>
-			</q-card>
-		</q-dialog>
-	
-	</div>
+    <q-dialog v-model="dialogInformacion">
+      <Error :informacion="informacion" />
+    </q-dialog>
+    
+    
+  </div>
 </template>
 
 <script>
-	import http from "../../../functions/http";
-	export default {
-		data() {
-			return {
-				dialogPlaca: false,
-				placa:"",
-				selectTecnico: {value:0, label: ""},
-				listaTecnicos:[],
-				solicitud: "",
-				teal: true,
-				km: 2000,
-				listaServicioTaller:[],
-				servicio:{
-					id:0,
-					nombre:""
-				},
-				text: "Observaciones",
-				fechaEntregaEstimada: "25/05/20 03:00 pm",
-				ultimo: "2500",
-				persona: {
-					id: 0,
-					nombre: "Carlos Andres Tamayo Benjumea",
-					telefono: "3136817175",
-					direccion: "Calle 12 # 26-46 Aguachica Cesar"
-				},
+  import { Dialog } from "quasar";
+  import http from "../../../functions/http";
+  import mapping from "../../../functions/mapping";
+  import DatosMoto from "./Finalizar/DatosMoto";
+  import DatosPropietario from "./Finalizar/DatosPropietario";
+  import ServiciosRealizados from "./Finalizar/ServiciosRealizados";
+  import Error from "../Error";
+  import Informacion from "../Informacion";
 
-				dato: {
-					id: 1,
-					placa: "AAA11",
-					color: "AZUL",
-					km_promedio: "50.00",
-					tipo_motoId: 1,
-					propietarioId: 1,
-					tipo_moto: {
-						referencia: "T115",
-						marca: {
-							nombre: "YAMAHA"
-						}
-					}
-				},
-				text: "",
-				selectActivity: { value: 0, label: "Nueva Orden" },
-				listActivity: [
-					{ value: 0, label: "Nueva Orden" },
-					{ value: 1, label: "Finalizar Orden" },
-					{ value: 2, label: "Administrador" }
-				]
-			};
-		},
-		beforeMount() {
-			this.$nextTick(() => {
-				this.cargarDatos();
-				this.cargarlistaTecnicos();
-				this.listaServicioTaller = [
-					{
-            id: 1,
-            nombre: "CAMBIO ACEITE TRANSMISION"
-        },
-        {
-            id: 8,
-            nombre: "CAMBIO BOMBILLO FAROLA"
-        },
-        {
-            id: 3,
-            nombre: "CAMBIO BUJIA"
-        },
-        {
-            id: 4,
-            nombre: "CAMBIO CORREA TRANSMISION"
-        },
-        {
-            id: 2,
-            nombre: "CAMBIO FILTRO ACEITE"
-        },
-				]
-			});
-		},
-		methods: {
-			selectedActivity(activity) {
-				this.selectActivity = JSON.parse(JSON.stringify(activity));
-			},
-			cargarlistaTecnicos(){
-				var ruta ='30/persona/tecnicoMap'
-				http(ruta, null, response => {
-					this.listaTecnicos = response.data.datos
-				}, e =>{
+  export default {
+    components: {
+      Dialog,
+      DatosMoto,
+      DatosPropietario,
+      Error,
+      Informacion
+    },
+    data() {
+      return {
+        ultimo: 3000,
+        dialogError: false,
+        dialogInformacion: false,
+        error: "",
+        informacion: "",
+        listaEnvio: [],
+        selectOrden: { value: 0, label: "" },
+        listaSelectOrden: [],
+        listaOrden: [],
+        listaServicioTaller: [],
+        checkedSolicitados: [],
+        checkedRealizados: [],
+        orden: {
+          id: 0,
+          fechaIngreso: 0,
+          fechaEntregaEstimada: 0,
+          fechaSalida: 0,
+          kilometraje: "",
+          kmTotal: 0,
+          solicitudes: "",
+          observaciones: "",
+          costoServicio: 0,
+          costoRepuestos: 0,
+          estado:'',
+          motoId: 0,
+          tecnicoId: 0,
+          adminId: 1,
+          tecnico: {
+            nombre: ''
+          },
+          moto: {
+            id: 0,
+            placa: 'AAAS',
+            color: '',
+            km_promedio: "0.00",
+            tipo_motoId: '',
+            propietarioId: '',
+            persona: {
+              nombre: '',
+              telefono: null,
+              direccion: null,
+            },
+            tipo_moto: {
+              id: null,
+              referencia: null,
+              marcaId: null,
+              marca: {
+                id: null,
+                nombre: null
+              }
+            }
+          }
+        }
+      };
+    },
+    beforeMount() {
+      this.$nextTick(() => {
+        this.cargarOrdenes();
+      });
+    },
+    computed: {
+      numeroOrden: function(){
+        /*if(this.orden.id === 0){
+          return ''
+        }else{
+          if(this.orden.id === 1){
+            return '0000' + this.oreden.id
+          }
+          if(this.orden.id === 2){
+            return '000' + this.oreden.id
+          }
+        }*/  
+        
+      
+      }
+    },
 
-				})
-			},
-			selectedTecnico(){
-
-			},
-			cargarDatos() {
-				var ruta = 'moto/findOneByPlacaNew'
-				var datos = { placa: this.placa }
-				http(ruta, datos, response =>{
-					if (response.data.datos !== null) {
-						if(response.data.datos.ordenEntradas.length){
-							console.log('la moto esta en el taller')
-						}else{
-							this.dato = response.data.datos
-						}
-					}else{
-						console.log('No se encontro la motocicleta')
-					}
-					
-					//console.log(response.data.datos)
-				}, e=>{
-					console.log(e.toString)
-				})
-			},
-		}
-	};
+    methods: {
+      
+      finalizarOrden(){
+        this.listaEnvio = mapping.serviciosRealizados(this.listaServicioTaller, this.checkedRealizados)
+        this.orden.fechaSalida = Number.parseFloat((this.$moment().format("X"))/(3600*24)).toFixed(5)
+        this.orden.estado = 'Finalizado'
+        var ruta = 'ordenEntrada/finalizar'
+        var datos = { orden: this.orden, adminId: 1 }
+        
+        http(ruta, datos, response => {
+          if(!response.data.error){
+            this.cargarOrdenes()
+            this.orden = mapping.datoOrdenNew(this.orden)
+          }else{
+            this.error = response.data.mensaje
+            this.dialogError = true
+          }
+        }, e=>{
+          this.error = e.message
+          this.dialogError = true
+        })
+      },
+      selectedOrden() {
+        this.checkedSolicitados = []
+        this.orden = (this.listaOrden.filter(o => o.id === this.selectOrden.value))[0];
+        this.listaServicioTaller = this.orden.servicios
+        this.checkedSolicitados = mapping.toCheckedSolicitados(this.orden.servicios)
+      },
+      cargarOrdenes() {
+        var ruta = "ordenEntrada/findAllIniciadas";
+        http(
+          ruta,
+          null,
+          response => {
+            if (!response.data.error) {
+              if (response.data.datos.length > 0) {
+                this.listaOrden = response.data.datos;
+                this.listaSelectOrden = mapping.ordenSelect(response.data.datos);
+              } else {
+                this.informacion = "No Existen Ordenes";
+                this.dialogInformacion = true;
+              }
+            } else {
+              this.error = response.data.mensaje;
+              this.dialogError = true;
+            }
+          },
+          e => {
+            this.error = e.message;
+            this.dialogError = true;
+          }
+        );
+      }
+    }
+  };
 </script>
 
 <style scoped>
-	.fila {
-		width: 100%;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	.inputBox {
-		width: 100%;
-		padding: 10px 0;
-		font-size: 16px;
-		letter-spacing: 1px;
-		color: #fff;
-		margin-bottom: 30px;
-		border: none;
-		border-bottom: 1px solid #fff;
-		outline: none;
-		background: transparent;
-	}
+  .fila {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .my-card {
+    width: 100%;
+    /*border: 1px solid black;*/
+  }
 </style>
-
