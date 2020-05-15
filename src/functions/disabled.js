@@ -31,7 +31,7 @@ const disabled = {
 		}
 		return false;
 	},
-	moto: (dato, selectMarca, selectTipo,persona) => {
+	moto: (dato, selectMarca, selectTipo , persona) => {
 		let placa = JSON.stringify(dato.placa.toString().trim().length > 0)
 		let color = JSON.stringify(dato.color.toString().trim().length > 0)
 		

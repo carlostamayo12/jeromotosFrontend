@@ -1,22 +1,12 @@
-
-//http://localhost:8080/main#/main
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children:[
-      { path: '/index', component: () => import('pages/Index.vue') },
+      { path: '', component: () => import('pages/Login.vue') },
       { path: '/main', component: () => import('pages/Main.vue') }
     ]
-  },
-  {
-    path: '/app',
-    component: () => import('layouts/PanelsLayout.vue'),
-    children: [
-      { path: '/app/main', component: () => import('pages/Main.vue') }
-    ]
   }
-
 ]
 
 // Always leave this as last one

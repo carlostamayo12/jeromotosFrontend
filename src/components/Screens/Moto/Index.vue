@@ -45,13 +45,13 @@
 			<Add :dato='dato' @click="createMoto" />
 		</q-dialog>
 
-		<!--<q-dialog v-model='dialogEdit'>
+		<q-dialog v-model='dialogEdit'>
 			<Edit :dato='dato' @click="updateMoto" />
 		</q-dialog>
 
 		<q-dialog v-model='dialogView'>
-			<View :dato='dato'/>
-		</q-dialog>-->
+			<Ver :dato='dato'/>
+		</q-dialog>
 	
 		<q-dialog v-model='dialogError'>
 			<Error :error='error'/>
@@ -177,22 +177,6 @@ export default {
           			this.error = msg
           			this.dialogError = val
         		}
-				
-				/*if(val === 0){
-					this.textFind = msg
-					this.cargarDatos()
-					this.dialogAdd = false
-				}
-				else if(val === 1){
-					this.textFind = ''
-					this.error = msg
-					this.dialogError = true
-				}
-				else{
-					this.textFind = ''
-					this.error = msg
-					this.dialogError = true
-				}*/
 			},
 			editMoto(dato) {
 				this.dato = JSON.parse(JSON.stringify(dato));
@@ -217,7 +201,12 @@ export default {
 			cargarDatos(){
 				var ruta = "Moto/findAll";
 				http( ruta, null, response => {
-						this.datos = response.data.datos;
+						if(!response.data.error){
+							this.datos = response.data.datos;
+						}else{
+							this.error = response.data.mensaje
+							this.dialogError = true
+						}
 					},
 					e => {
 						this.error = e.message;

@@ -1,88 +1,264 @@
-<!--<template>
-  <q-card style="min-width: 450px; min-height: 350px">
-    <q-card-section>
-      <div class="text-h6">Edit Moto</div>
-    </q-card-section>
-    
-		<q-card-section class="q-pt-none row">
-      <q-input
-        color="black"
-        v-model.trim="dato.placa"
-        class="text-uppercase col q-mr-md"
-        autofocus
-        stack-label
-        label="Placa"
-        dense
-        maxlength="6"
-      />
-      <q-input
-        color="black"
-        v-model="dato.color"
-        class="text-uppercase col q-mx-md"
-        stack-label
-        dense
-        label="Color"
-      />
-    </q-card-section>
-    
-		<q-card-section class="q-pt-none row ">
-      <q-select
-        label="MARCA"
-        color="black"
-        class="col q-mr-md"
-				dense
-        v-model="selectMarca"
-        :options="listaMarcas"
-        style="padding: 0"
-      />
-      <q-select 
-			label="REFERENCIA" 
-			color="black" 
-			class="col q-mx-md"
-			dense 
-			v-model="selectTipo" 
-			:options="listarTipos" 
-			/>
-    </q-card-section>
-    
-		<q-card-section class="q-pt-none">
-      <q-input
-        dense
-        v-model.trim="persona.nombre"
-        color="black"
-        class="text-uppercase"
-        stack-label
-        label="Propietario"
-      />
-      <q-list dense>
-        <q-item
-          v-for="(persona,i) in listarPersonas"
-          :key="i"
-          clickable
-          v-ripple
-          style="margin: 10px 16px;"
-          @click="propietario(persona)"
-        >
-          <q-item-section>
-            <q-item-label caption>{{persona.nombre}}</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-card-section>
-    
-		<q-card-actions align="right" class="text-black">
-      <q-btn flat label="Cancel" v-close-popup />
-      <q-btn flat label="Aceptar" :disable="disabledButton" @click="createMoto" />
-    </q-card-actions>
-  </q-card>
+<template>
+  <div>
+    <q-card style="min-width: 450px; min-height: 350px">
+      <q-card-section>
+        <div class="text-h6">Editar Moto</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none row">
+        <q-input
+          color="black"
+          v-model.trim="dato.placa"
+          class="text-uppercase col q-mr-md"
+          autofocus
+          mask="AAA##A"
+          stack-label
+          label="Placa"
+          dense
+          maxlength="6"
+        />
+        <q-input
+          color="black"
+          v-model="dato.color"
+          class="text-uppercase col q-mx-md"
+          stack-label
+          dense
+          label="Color"
+        />
+      </q-card-section>
+
+      <q-card-section class="q-pt-none row">
+        <q-select
+          label="MARCA"
+          color="black"
+          class="col q-mr-md"
+          dense
+          v-model="selectMarca"
+          :options="listaMarcas"
+          @input="selectedMarca"
+          style="padding: 0"
+        />
+        <q-select
+          label="REFERENCIA"
+          color="black"
+          class="col q-mx-md"
+          dense
+          v-model="selectTipo"
+          :options="listarTipos"
+        />
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        <q-input
+          dense
+          v-model.trim="persona.nombre"
+          color="black"
+          class="text-uppercase"
+          stack-label
+          label="Propietario"
+        />
+        <q-list dense>
+          <q-item
+            v-for="(persona,i) in listarPersonas"
+            :key="i"
+            clickable
+            v-ripple
+            style="margin: 10px 16px;"
+            @click="propietario(persona)"
+          >
+            <q-item-section>
+              <q-item-label caption>{{persona.nombre}}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
+     <q-card-actions align="right" class="text-black q-mb-none">
+        <q-btn label="Cancel" flat v-close-popup />
+        <q-btn
+          label="Aceptar"
+          flat
+          :disable="disabledButton"
+          @click="updateMoto"
+        />
+      </q-card-actions>
+    </q-card>
+
+    <q-dialog v-model="dialogError">
+      <Error :error="error" />
+    </q-dialog>
+  </div>
 </template>
 
 <script>
-export default {
-	data(){
-		return{
+  import http from "../../../functions/http";
+  import disabled from "../../../functions/disabled";
+  import mapping from "../../../functions/mapping";
+  import Error from "../Error";
 
-		}
-	}
-}
-</script>-->
+  export default {
+    components: { Error },
+    props: ["dato"],
+    data() {
+      return {
+        error:'',
+        dialogError: false,
+        idMoto: 0,
+        selectMarca: { value: 0, label: "" },
+        listaMarcas: [],
+        selectTipo: { value: 0, label: "" },
+        listaTipos: [],
+        listaPersonas: [],
+        persona: {
+          id: 0,
+          nombre: ""
+        },
+        cloneSelectMarca:{value:0, label: ''},
+        p :{ id: 3 }
+      };
+      
+    },
+    computed: {
+      disabledButton: function() {
+        return disabled.moto(this.dato, this.selectMarca, this.selectTipo, this.p);
+      },
+      listarTipos: function() {
+        if (this.selectMarca.value == 0) {
+          return [];
+        }
+        var lista = this.listaMarcas.filter(
+          t => t.value == this.selectMarca.value
+        );
+        return this.listaTipos.filter(t => t.marcaId == this.selectMarca.value);
+      },
+      listarPersonas: function() {
+        if (
+          this.listaPersonas.filter(
+            v => v.nombre.toLowerCase() == this.persona.nombre.toLowerCase()
+          ).length == 1
+        ) {
+          return [];
+        } else {
+          this.persona.id = 0;
+        }
+        if (this.persona.nombre.length < 1) {
+          this.persona.id = 0;
+          return [];
+        } else {
+          const find = this.listaPersonas.filter(
+            v =>
+              v.nombre.toLowerCase().indexOf(this.persona.nombre.toLowerCase()) >
+              -1
+          );
+          if (find.length) {
+            return this.listaPersonas.filter(
+              v =>
+                v.nombre
+                  .toLowerCase()
+                  .indexOf(this.persona.nombre.toLowerCase()) > -1
+            );
+          } else {
+            return [{ id: 0, nombre: "No se encontraron coincidencias" }];
+          }
+        }
+      }
+    },
+    beforeMount() {
+      this.$nextTick(() => {
+        this.selectMarca = {value: this.dato.tipo_moto.marca.id , label: this.dato.tipo_moto.marca.nombre }
+        //this.cloneSelectMarca = {value: this.dato.tipo_moto.marca.id , label: this.dato.tipo_moto.marca.nombre }
+        this.selectTipo = {value: this.dato.tipo_moto.id , label: this.dato.tipo_moto.referencia }
+        this.persona = {id: 2, nombre: this.dato.persona.nombre}
+        //this.cloneSelectMarca = this.selectMarca
+        this.cargarMarcas();
+        this.cargarTipos();
+        this.cargarPersonas();
+      });
+    },
+    methods: {
+      updateMoto(){
+        var ruta = "moto/update";
+        var datos = { 
+          id: this.dato.id,
+          placa: this.dato.placa,
+          color: this.dato.color,
+          //propietarioId: this.persona.id,
+          adminId: 1
+        }
+        
+        http(ruta, datos, response =>{
+          if(!response.data.error){
+            this.$emit("click", false, this.dato.placa);
+          }else{
+            this.$emit("click", true, response.data.mensaje);
+          }
+        }, e => {
+            this.$emit("click", true, e.message);
+        })
+      },
+      propietario(persona) {
+        this.persona = JSON.parse(JSON.stringify(persona));
+      },
+      cargarMarcas() {
+        var ruta = "marca/findAllMarcaTipoMaps";
+        http(
+          ruta,
+          null,
+          response => {
+            if (!response.data.error) {
+              this.listaMarcas = response.data.datos;
+            } else {
+              this.error = response.data.mensaje;
+              this.dialogError = true;
+            }
+          },
+          e => {
+            this.error = e.message;
+            this.dialogError = true;
+          }
+        );
+      },
+      cargarTipos() {
+        var ruta = "tipoMoto/findAll";
+        http(
+          ruta,
+          null,
+          response => {
+            if (!response.data.error) {
+              this.listaTipos = response.data.datos.map(item => {
+                return {
+                  value: item.id,
+                  label: item.referencia,
+                  marcaId: item.marcaId
+                };
+              });
+            } else {
+              this.error = response.data.mensaje;
+              this.dialogError = true;
+            }
+          },
+          e => {
+            this.error = response.data.mensaje;
+            this.dialogError = true;
+          }
+        );
+      },
+      cargarPersonas() {
+        var ruta = "persona/findAll";
+        http(ruta, null,
+          response => {
+            this.listaPersonas = response.data.datos.map(p => {
+              return {
+                id: p.id,
+                nombre: p.nombre
+              };
+            });
+          },
+          e => {}
+        );
+      },
+      selectedMarca(){
+        this.selectTipo = {value: 0, label: ''}
+      }
+    }
+  };
+</script>

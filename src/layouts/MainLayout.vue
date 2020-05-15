@@ -1,46 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <!--@click="leftDrawerOpen = !leftDrawerOpen"-->
-    <!--<q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click = "r"  
-        />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>-->
-
-    <!--<q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
-      <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Essential Links
-        </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>-->
-
+    <q-header elevated>
+        </q-header>
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -48,24 +9,15 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink'
-
+import { LocalStorage, SessionStorage } from 'quasar'
 export default {
-  name: 'MainLayout',
-
-  components: {
-    EssentialLink
-  },
-
-  data () {
-    return {
-      leftDrawerOpen: false,
-    }
-  },
-  methods:{
-    r(){
-      this.$router.push("/main");
-    }
-  }
-}
+  beforeMount(){
+    this.$nextTick(()=>{
+      if(SessionStorage.isEmpty()){
+        this.$router.push('/')
+      }else{
+        //this.administrador = SessionStorage.get.item('administrador').nombre
+      }
+    })
+}}
 </script>
