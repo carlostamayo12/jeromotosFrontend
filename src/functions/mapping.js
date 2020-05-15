@@ -1,4 +1,13 @@
 const mapping = {
+	contadorInit:(data, motoId) =>{
+		return data.map(item =>{
+			return {
+				id: 0,
+				servicioId: item.servicioId ,
+				motoId:motoId
+			}
+		})
+	},
 	tablaInit: (data, tipo_motoId) => {
 		return data.map(item => {
 			return {

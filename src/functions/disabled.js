@@ -31,11 +31,11 @@ const disabled = {
 		}
 		return false;
 	},
-	moto: (dato) => {
+	moto: (dato, selectMarca, selectTipo,persona) => {
 		let placa = JSON.stringify(dato.placa.toString().trim().length > 0)
 		let color = JSON.stringify(dato.color.toString().trim().length > 0)
 		
-		if(placa && color){
+		if(placa && color && selectMarca.value > 0 && selectTipo.value > 0 && persona.id > 0){
 			return false
 		}else{
 			return true

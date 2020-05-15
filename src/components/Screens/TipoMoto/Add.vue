@@ -71,7 +71,7 @@
             }
           },
           e => {
-            this.$emit("click", 2, e.message);
+            this.$emit("click", true, e.message);
           }
         );
 			},

@@ -166,7 +166,19 @@ export default {
         this.dialogAdd = true
 			},
 			createMoto(val, msg){
-				if(val === 0){
+				
+				if (!val) {
+					this.error = ''
+					this.textFind = msg
+					this.cargarDatos();
+					this.dialogAdd = val
+        		} else {
+          			this.textFind = ''
+          			this.error = msg
+          			this.dialogError = val
+        		}
+				
+				/*if(val === 0){
 					this.textFind = msg
 					this.cargarDatos()
 					this.dialogAdd = false
@@ -180,7 +192,7 @@ export default {
 					this.textFind = ''
 					this.error = msg
 					this.dialogError = true
-				}
+				}*/
 			},
 			editMoto(dato) {
 				this.dato = JSON.parse(JSON.stringify(dato));
