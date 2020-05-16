@@ -90,6 +90,7 @@
 </template>
 
 <script>
+  import { LocalStorage, SessionStorage } from 'quasar'
   import http from "../../../functions/http";
   import disabled from "../../../functions/disabled";
   import mapping from "../../../functions/mapping";
@@ -210,7 +211,8 @@
                 color: this.dato.color.toUpperCase(),
                 tipo_motoId: this.selectTipo.value,
                 propietarioId: this.persona.id,
-                adminId: 1};
+                adminId: SessionStorage.getItem('administrador').id
+              };
                 
                 var ruta = 'moto/create'
                 var datos = {moto: moto, lista: lista}

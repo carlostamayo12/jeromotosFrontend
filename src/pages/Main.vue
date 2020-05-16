@@ -47,9 +47,7 @@
 				<q-tab-panel  name="tipomoto">
 					<TipoMoto />
 				</q-tab-panel>
-
-				
-
+			
 			</q-tab-panels>
 		</q-card>
 	</q-page>
@@ -57,43 +55,37 @@
 
 <script>
 	
-	import Marca from "../components/Screens/Marca/Index";
-	import Moto from "../components/Screens/Moto/Index";
-	import Orden from "../components/Screens/Orden/Index"
-	import Persona from "../components/Screens/Persona/Index";
-	import ServicioTaller from "../components/Screens/ServicioTaller/Index";
-	import TipoMoto from "../components/Screens/TipoMoto/Index";
-	//import { LocalStorage, SessionStorage } from 'quasar'
-	
-	export default {
-		components: {
-			Marca,
-			Moto,
-			Orden,
-			Persona,
-			ServicioTaller,
-			TipoMoto
-		},
-		data() {
-			return {  
-				tab: 'marca',
-				administrador:'Admin'
-			};
-		},
-		beforeMount(){
+import Marca from "../components/Screens/Marca/Index";
+import Moto from "../components/Screens/Moto/Index";
+import Orden from "../components/Screens/Orden/Index"
+import Persona from "../components/Screens/Persona/Index";
+import ServicioTaller from "../components/Screens/ServicioTaller/Index";
+import TipoMoto from "../components/Screens/TipoMoto/Index";
+import { LocalStorage, SessionStorage } from 'quasar'
+
+export default {
+	components: {
+		Marca,
+		Moto,
+		Orden,
+		Persona,
+		ServicioTaller,
+		TipoMoto
+	},
+	data() {
+		return {  
+			tab: 'marca',
+			administrador:'Administrador'
+		};
+	},
+	beforeMount(){
     this.$nextTick(()=>{
-      /*if(SessionStorage.isEmpty()){
+      if(SessionStorage.isEmpty()){
         this.$router.push('/')
       }else{
 				this.administrador = SessionStorage.getItem('administrador').nombre
-			}*/
-			this.administrador = "Carlos Tamayo";
-    })
-  },
-		methods:{
-			close(){
-				//this.$router.push('/')
 			}
-		},
+		})
+	}
 	};
 </script>

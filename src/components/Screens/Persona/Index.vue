@@ -51,8 +51,7 @@
           <q-icon name="info" @click.native="viewPersona(dato)" color="grey-9" />
         </q-item-section>
       </q-item>
-    <pre>{{selectRol}}</pre>
-		</q-list>
+    </q-list>
 
 		<div class="flex fila q-mt-xl" style="max-width:500px;" v-if="listarPersonas.length > 0">
 				<q-pagination
@@ -66,16 +65,16 @@
 				/>
 			</div>
 	  
-    <q-dialog v-model='dialogAdd'>
+    <q-dialog v-model='dialogAdd' persistent>
 			<Add :dato='dato' @click="createPersona" />
 		</q-dialog>
 
-    <q-dialog v-model='dialogEdit'>
-			<Edit />
+    <q-dialog v-model='dialogEdit' persistent>
+			<Edit :dato='dato' @click="updatePersona" />
 		</q-dialog>
 
     <q-dialog v-model='dialogView'>
-			<Ver />
+			<Ver :dato="dato" />
 		</q-dialog>
 
     <q-dialog v-model='dialogError'>
@@ -198,11 +197,13 @@ export default {
       },
       updatePersona(val, msg) {
         if (!val) {
+          console.log('if val :' + val + ' msg: ' + msg)
           this.error = "";
           this.textFind = msg;
           this.cargarDatos();
           this.dialogEdit = val;
         } else {
+          console.log('else val :' + val + ' msg: ' + msg)
           this.textFind = "";
           this.error = msg;
           this.dialogError = val;

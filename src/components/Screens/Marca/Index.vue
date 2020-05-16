@@ -54,7 +54,7 @@
       <Edit :dato="dato" @click="updateMarca" />
     </q-dialog>
 
-    <q-dialog v-model="dialogView" persistent>
+    <q-dialog v-model="dialogView" >
       <Ver :dato="dato" />
     </q-dialog>
 

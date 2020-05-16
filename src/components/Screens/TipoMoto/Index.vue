@@ -56,7 +56,7 @@
 
     <q-dialog v-model="dialogEdit">
       <Edit :dato="dato" @click="updateTipo" />
-    </q-dialog>
+    </q-dialog>  
 
     <q-dialog v-model="dialogView">
       <Ver :dato="dato" />

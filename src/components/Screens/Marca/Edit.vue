@@ -24,6 +24,7 @@
 <script>
   import http from "../../../functions/http";
   import disabled from "../../../functions/disabled";
+  import { LocalStorage, SessionStorage } from 'quasar'
 
   export default {
     props: ["dato"],
@@ -42,7 +43,7 @@
         var datos = {
   					id: this.dato.id,
   					nombre: this.dato.nombre.toUpperCase(),
-  					adminId: 1
+  					adminId: SessionStorage.getItem('administrador').id
         }
         http(ruta, datos, response => {
   					if (!response.data.error) {

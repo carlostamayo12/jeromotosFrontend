@@ -119,7 +119,7 @@
       </q-dialog>
 
       <q-dialog v-model="dialogInformacion">
-        <Error :informacion="informacion" />
+        <Informacion :informacion="informacion" />
       </q-dialog>
     </div>
   </div>
@@ -280,16 +280,19 @@
           { placa: this.findPlaca },
           response => {
             if (!response.data.error) {
+              console.log(response.data.datos.length > 0)
               if (response.data.datos.length > 0) {
+                console.log('if')
                 this.dato = response.data.datos[0];
                 this.findPlaca = "";
                 this.dialogFind = false;
                 this.cargarServicioTaller(response.data.datos[0].tipo_motoId);
               } else {
-                this.informacion = "No Hay Coincidencias";
+                console.log('else')
+                //this.informacion = "No Hay Coincidencias";
                 //this.dialogInformacion = true
                 this.dialogError = true;
-                this.error = "No Hay Coincidencias";
+                //this.error = "No Hay Coincidencias";
               }
             } else {
               this.error = response.data.mensaje;

@@ -53,6 +53,7 @@
         :rules="[val => !!val || 'Field is required']"
       />
       <q-option-group
+        v-if=" adminRol > 3"
         dense
         style="font-size:10px;"
         v-model="roles"
@@ -61,9 +62,7 @@
         type="checkbox"
         inline
       />
-      <pre>{{dato}}</pre>
     </q-card-section>
-    <!--v-if=" this.$q.sessionStorage.getItem('administrador').id > 3"-->
     <q-card-actions align="right" class="text-black">
       <q-btn flat label="Cancel" v-close-popup />
       <q-btn flat label="Aceptar" :disable="disabledButton" @click="createPersona" />
@@ -72,6 +71,7 @@
 </template>
 <script>
   import { firebaseAuth, firebaseDB } from "../../../boot/firebase";
+  import { LocalStorage, SessionStorage } from 'quasar'
   import http from "../../../functions/http";
   import disabled from "../../../functions/disabled";
 
@@ -79,6 +79,7 @@
     props: ["dato"],
     data() {
       return {
+        adminRol: 0,
         roles: [],
         listaRoles: [
           { value: 1, label: "Tecnico" },
@@ -92,11 +93,13 @@
       }
     },
     beforeMount() {
-      this.$nextTick(() => {});
+      this.$nextTick(() => {
+        this.adminRol = (SessionStorage.getItem('administrador')).rol
+      });
     },
     methods: {
       createPersona() {
-        //this.dato.adminId = (SessionStorage.getItem('administrador').id)
+        this.dato.adminId = (SessionStorage.getItem('administrador').id)
         this.dato.rol = this.roles.length == 0 ? 0 : this.roles.length == 1 ? this.roles[0] : 3;
         var ruta = "persona/create";
 

@@ -21,6 +21,8 @@
 </template>
 
 <script>
+  
+  import { LocalStorage, SessionStorage } from 'quasar'
   import http from "../../../functions/http";
   import disabled from "../../../functions/disabled";
 
@@ -39,7 +41,7 @@
           var datos = {
             id: this.dato.id,
             nombre: this.dato.nombre.toUpperCase(),
-            adminId: 1
+            adminId: SessionStorage.getItem('administrador').id
           };
           http(
             ruta,

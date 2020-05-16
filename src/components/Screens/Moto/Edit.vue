@@ -90,6 +90,7 @@
 </template>
 
 <script>
+  import { LocalStorage, SessionStorage } from 'quasar'
   import http from "../../../functions/http";
   import disabled from "../../../functions/disabled";
   import mapping from "../../../functions/mapping";
@@ -182,7 +183,7 @@
           placa: this.dato.placa,
           color: this.dato.color,
           //propietarioId: this.persona.id,
-          adminId: 1
+          adminId: SessionStorage.getItem('administrador').id
         }
         
         http(ruta, datos, response =>{

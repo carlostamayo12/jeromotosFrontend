@@ -2,7 +2,7 @@
   <div>
     <q-card style="min-width: 450px; min-height: 350px">
       <q-card-section>
-        <div class="text-h6">Ver Moto</div>
+        <div class="text-h6">Motocicleta</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none row">

@@ -58,6 +58,7 @@
 </template>
 
 <script>
+  import { LocalStorage, SessionStorage } from 'quasar'
   import http from "../../../functions/http";
   import disabled from "../../../functions/disabled";
 
@@ -74,15 +75,17 @@
     methods: {
       updatePersona() {
         let ruta = "persona/update";
-        let datos = {};
-
-        http(ruta, datos, response => {
+        this.dato.adminId = (SessionStorage.getItem('administrador').id)
+        
+        http(ruta, this.dato, response => {
             if (!response.data.error) {
+              this.$emit('click', false, this.dato.nombre)
             } else {
+              this.$emit('click', true, response.data.mensaje)
             }
           },
           e => {
-						
+						this.$emit('click', true, e.message)
 					}
         );
       }
