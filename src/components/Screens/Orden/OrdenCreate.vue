@@ -17,24 +17,6 @@
           style="max-width: 300px"
         />
 
-        <!--<q-input dense v-model="date" color="black">
-          <template v-slot:prepend>
-            <q-icon name="event" class="cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-date color="red" v-model="date" mask="YYYY-MM-DD HH:mm" />
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-
-          <template v-slot:append>
-            <q-icon name="access_time" class="cursor-pointer">
-              <q-popup-proxy transition-show="scale" transition-hide="scale">
-                <q-time color="red" v-model="date" mask="YYYY-MM-DD HH:mm" format24h />
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>-->
-
         <q-input v-if="dato.id !== 0"
           color="black"
           dense
@@ -79,10 +61,10 @@
       <DatosMoto class="my-card col q-mr-md" :dato="dato" :ultimo="ultimo" />
       <DatosPropietario class="my-card col" :dato="dato" />
     </div>
-
+  
     <div class="row my-card q-mt-none q-py-none" v-if="dato.id !== 0">
       <!-- Lista Servicios -->
-			<q-card class="q-mt-lg my-card col" style="width:30%" >
+			<q-card class="q-mt-lg my-card col" style="max-width:30%" >
         <q-list bordered>
           <p class="bg-black text-white q-py-xs q-pl-md q-mb-none text-overline">Servicios Taller</p>
           <q-item
@@ -108,9 +90,30 @@
         </q-list>
       </q-card>
 
-			<q-card class="q-mt-lg my-card col">
-				<q-card-section>
-          Solicitudes
+			<q-card class="q-mt-lg my-card col q-ml-md">
+				<p class="bg-black text-white q-py-xs q-pl-md q-mb-none text-overline">Solicitudes</p>
+        <q-card-section>
+          <q-input
+            label="Solicitud1"
+            color="black"
+            v-model="solicitud_1"
+            type="textarea"
+            autogrow
+          />
+          <q-input
+            label="Solicitud2"
+            color="black"
+            v-model="solicitud_2"
+            type="textarea"
+            autogrow
+          />
+          <q-input
+            label="Solicitud3"
+            color="black"
+            v-model="solicitud_3"
+            type="textarea"
+            autogrow
+          />
 				</q-card-section>
 			</q-card>
 
@@ -122,6 +125,7 @@
         <Informacion :informacion="informacion" />
       </q-dialog>
     </div>
+  
   </div>
 </template>
 
@@ -129,28 +133,23 @@
   import { Dialog } from "quasar";
   import http from "../../../functions/http";
   import mapping from "../../../functions/mapping";
-  import Cabecera from "./Crear/Cabecera";
+  
   import DatosMoto from "./Crear/DatosMoto";
   import DatosPropietario from "./Crear/DatosPropietario";
-  import ServiciosSolicitados from "./Crear/ServiciosSolicitados";
-  import Solicitudes from "./Crear/Solicitudes";
   import Error from "../Error";
   import Informacion from "../Informacion";
 
   export default {
     components: {
-      Cabecera,
       DatosMoto,
       DatosPropietario,
-      ServiciosSolicitados,
-      Solicitudes,
       Dialog,
       Error,
       Informacion
     },
     data() {
       return {
-				orden:{
+        orden:{
 					id: 0,
 					fechaIngreso: 0,
 					fechaEntregaEstimada: 0,
@@ -179,13 +178,15 @@
           nombre: null
         },
         km: '',
-        teal: true,
         listaServicioTaller: [],
         listaServiciosEnvio: [],
         selectTecnico: { value: 0, label: "" },
         listaTecnicos: [],
         fechaEntregaEstimada: "31/03/2200",
 
+        solicitud_1:'',
+        solicitud_2:'',
+        solicitud_3:'',
         dato: {
           id: 0,
           placa: null,
@@ -211,12 +212,11 @@
 		computed:{
 			disabledButton: function (){
 				if(this.dato.id > 0 && this.date.length > 0 && 
-					 this.checkedSolicitados.length > 0 && 
-					 this.orden.kilometraje.length > 0 && this.selectTecnico.value > 0){
+           (this.checkedSolicitados.length > 0 || this.solicitud_1 !== ''  || this.solicitud_2 !== '' || this.solicitud_3 !== '' )
+           && this.orden.kilometraje.length > 0 && this.selectTecnico.value > 0){
 					return false
 				}
-				//return true
-				return false
+				return true
 			}
 		},
     beforeMount() {
@@ -244,7 +244,8 @@
         this.orden.motoId = JSON.parse(JSON.stringify(this.dato.id))
         this.orden.tecnicoId = JSON.parse(JSON.stringify(this.selectTecnico.value))
         this.listaServiciosEnvio = mapping.serviciosSolicitados(this.listaServicioTaller, this.checkedSolicitados, this.orden.id)
-
+        this.orden.solicitudes = this.solicitud_1 + '**' +this.solicitud_2 + '**' + this.solicitud_3
+        
         var datos = {orden: this.orden, lista: this.listaServiciosEnvio }
         var ruta = 'ordenEntrada/create'
         http(ruta, datos, response => {
@@ -252,6 +253,13 @@
             this.ultimaOrden()
             this.dato = mapping.datoMotoOrdenNuevo(this.dato)
             this.orden = mapping.datoOrdenNew(this.orden)
+            this.solicitud_1 = ''
+            this.solicitud_2 = ''
+            this.solicitud_3 = ''
+            this.selectTecnico = { value: 0, label: "" }
+            this.checkedSolicitados = []
+            //this.informacion = 'Generada la orden'
+            //this.dialogInformacion = true
           }else{
             this.error = response.data.mensaje
             this.diaogError = true

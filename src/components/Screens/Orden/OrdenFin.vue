@@ -76,7 +76,7 @@
       <DatosPropietario class="my-card col" :orden="orden.moto" />
     </div>
   
-    	<q-card class="q-mt-lg my-card col" style="width:30%" v-if="orden.id !== 0">
+    	<q-card class="q-mt-lg my-card col" style="max-width:30%" v-if="orden.id !== 0">
         <q-list bordered>
           <p class="bg-black text-white q-py-xs q-pl-md q-mb-none text-overline">Servicios Taller</p>
           <q-item
@@ -109,7 +109,8 @@
           </q-item>
         </q-list>
       </q-card>
-
+      <pre>{{checkedRealizados}}</pre>
+      <pre>{{orden}}</pre>
 			<q-card class="q-mt-lg my-card col">
 				<q-card-section>
           Solicitudes
@@ -134,6 +135,7 @@
   import { Dialog } from "quasar";
   import http from "../../../functions/http";
   import mapping from "../../../functions/mapping";
+  import listar from "../../../functions/listar";
   import DatosMoto from "./Finalizar/DatosMoto";
   import DatosPropietario from "./Finalizar/DatosPropietario";
   import ServiciosRealizados from "./Finalizar/ServiciosRealizados";
@@ -162,6 +164,7 @@
         listaServicioTaller: [],
         checkedSolicitados: [],
         checkedRealizados: [],
+        listaJoin:[],
         orden: {
           id: 0,
           fechaIngreso: 0,
@@ -226,7 +229,6 @@
       
       }
     },
-
     methods: {
       
       finalizarOrden(){
@@ -236,7 +238,66 @@
         var ruta = 'ordenEntrada/finalizar'
         var datos = { orden: this.orden, adminId: 1 }
         
-        http(ruta, datos, response => {
+        var ruta = 'tablaMantenimiento/joinContador'
+        var listaJoin = []
+        
+        http(ruta, { motoId: this.orden.motoId }, response =>{
+          if(!response.data.error){
+            listaJoin = response.data.datos
+            //console.log(response.data.datos)
+            var ruta = 'ordenentrada/findAllByMoto'
+            http(ruta, { motoId: this.orden.motoId }, response => {
+                if(!response.data.error){
+                  listar.ordenSalidaEnvio(this.orden.moto.km_promedio, listaJoin, response.data.datos, this.checkedRealizados, this.orden.fechaSalida)
+                }else{
+                  console.log(response.data.mensaje)
+                }
+            }, e =>{
+              console.log(e.message)
+            })
+          }else{
+            console.log(response.data.mensaje)
+          }
+        }, e =>{
+          console.log(e.message)
+        })
+        
+        
+        /*var ruta = 'ordenentrada/findAllByMoto'
+        http(ruta, {motoId: this.orden.motoId}, response => {
+          if(!response.data.error){
+            var ruta = 'ordenentrada/findAllByMoto'
+            http('')
+          }else{
+            console.log(response.data.mensaje)
+          }
+          
+          //console.log(response.data.datos)
+          //listar.ordenSalidaEnvio(response.data.datos)
+        }, e => {
+          console.log(e.message)
+        })*/
+        
+        /*var ruta = 'ordenentrada/findAllByMoto'
+        http(ruta, {motoId: this.orden.motoId}, response =>{
+          if(!response.data.error){
+            //if((response.data.datos.filter(o => o.estado === 'Finalizado' )).length > 0 ){
+              //console.log( (response.data.datos.filter(o => o.estado === 'Finalizado' )).length > 0 )
+            //listar(this.orden.moto.km_promedio,listaJoin, response.data.datos,this.checkedRealizados, this.orden.fechaSalida)
+            var x = listar(response.data.datos)
+            console.log(response.data.datos)
+            //}
+          }else{
+            console.log(response.data.mensaje)
+          }
+        }, e =>{
+            console.log(e)
+        })*/
+
+        
+
+        
+        /*http(ruta, datos, response => {
           if(!response.data.error){
             this.cargarOrdenes()
             this.orden = mapping.datoOrdenNew(this.orden)
@@ -247,13 +308,14 @@
         }, e=>{
           this.error = e.message
           this.dialogError = true
-        })
+        })*/
       },
       selectedOrden() {
         this.checkedSolicitados = []
         this.orden = (this.listaOrden.filter(o => o.id === this.selectOrden.value))[0];
         this.listaServicioTaller = this.orden.servicios
         this.checkedSolicitados = mapping.toCheckedSolicitados(this.orden.servicios)
+        //this.orden.solicitudes = response.data.datos.split('**')
       },
       cargarOrdenes() {
         var ruta = "ordenEntrada/findAllIniciadas";

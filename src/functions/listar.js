@@ -1,4 +1,27 @@
 const listar = {
+	ordenSalidaEnvio: (km_promedio, listaJoin, Ordenes, chekedRealizados, fechaSalida) => {
+		var listaOrdenes = (Ordenes.filter(o => o.estado === 'Finalizado'))
+		var envio = {}
+		if(listaOrdenes.length === 0){
+			var lj = listaJoin.filter(l => l.tiempo > 0 )
+			if(lj.length === 0){
+				console.log('lj === 0')
+			}else{
+				lj.map(l =>{
+
+				})
+			}
+		} else if (listaOrdenes.length === 1){
+
+		}
+		else{
+			
+		
+		
+		}
+		
+		return envio
+	},
 	kilometraje: () => {
 		var obj = [];
 		for (let i = 0; i <= 20; i++) {
