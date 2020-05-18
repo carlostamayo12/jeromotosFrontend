@@ -109,8 +109,8 @@
           </q-item>
         </q-list>
       </q-card>
-      <pre>{{checkedRealizados}}</pre>
-      <pre>{{orden}}</pre>
+      <!--<pre>{{checkedRealizados}}</pre>
+      <pre>{{orden}}</pre>-->
 			<q-card class="q-mt-lg my-card col">
 				<q-card-section>
           Solicitudes
@@ -138,7 +138,6 @@
   import listar from "../../../functions/listar";
   import DatosMoto from "./Finalizar/DatosMoto";
   import DatosPropietario from "./Finalizar/DatosPropietario";
-  import ServiciosRealizados from "./Finalizar/ServiciosRealizados";
   import Error from "../Error";
   import Informacion from "../Informacion";
 
@@ -315,6 +314,9 @@
         this.orden = (this.listaOrden.filter(o => o.id === this.selectOrden.value))[0];
         this.listaServicioTaller = this.orden.servicios
         this.checkedSolicitados = mapping.toCheckedSolicitados(this.orden.servicios)
+        
+       
+        
         //this.orden.solicitudes = response.data.datos.split('**')
       },
       cargarOrdenes() {

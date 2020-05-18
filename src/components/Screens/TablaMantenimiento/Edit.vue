@@ -41,7 +41,7 @@
         </q-item>
       </q-list>
     </q-card-section>
-		<q-card-actions align="right" class="text-primary">
+		<q-card-actions align="right" class="text-black">
       <q-btn flat label="Cancel" v-close-popup />
       <q-btn flat label="Aceptar" :disable="disabledButton" @click="updateTabla" />
     </q-card-actions>

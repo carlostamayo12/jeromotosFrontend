@@ -2,6 +2,10 @@
 <template>
   <div class="box">
     <h2>Login</h2>
+    <!--<img
+      alt="Quasar logo"
+      src="statics/bg2.jpg"   
+    >-->
     <form>
       <div class="inputBox">
         <input type="text" autocomplete="on" v-model="user" required />
@@ -77,7 +81,8 @@
     letter-spacing: 1px;
   }
   .body {
-    background: url("../statics/bg2.jpg");
+    
+    background-image: url("../statics/bg2.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: right;

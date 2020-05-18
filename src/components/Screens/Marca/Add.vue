@@ -11,7 +11,7 @@
         autofocus
         dense
         maxlength="20"
-      />
+      />  
     </q-card-section>
     <q-card-actions align="right" class="text-black">
       <q-btn flat label="Cancel" v-close-popup />
