@@ -248,7 +248,7 @@
             var ruta = 'ordenentrada/findAllByMoto'
             http(ruta, { motoId: this.orden.motoId }, response => {
                 if(!response.data.error){
-                  listar.ordenSalidaEnvio(this.orden.moto.km_promedio, listaJoin, response.data.datos, this.checkedRealizados, this.orden.fechaSalida)
+                  listar.ordenSalidaEnvio(this.orden, listaJoin, response.data.datos, this.checkedRealizados, this.orden.fechaSalida)
                 }else{
                   console.log(response.data.mensaje)
                 }
