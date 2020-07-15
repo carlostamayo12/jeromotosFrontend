@@ -39,8 +39,6 @@ function CallcularkmPromedio(listaOrdenes, orden) {
 
 
 const listar = {
-
-
 	ordenSalidaEnvio: (orden, listaJoin, Ordenes, chekedRealizados, fechaSalida) => {
 		var listaOrdenes = (Ordenes.filter(o => o.estado === 'Finalizado'))
 		var envio = []
@@ -60,7 +58,6 @@ const listar = {
 					}
 				})
 			}
-
 		}
 		//Numero de ordenes = 1
 		else if (listaOrdenes.length === 1) {
@@ -122,7 +119,9 @@ const listar = {
 				}
 			})
 		}
-		envio.push(contador)
+		//envio.push(contador)
+		//console.log(envio)
+		envio = {envio: contador}
 		console.log(envio)
 		return envio
 	},

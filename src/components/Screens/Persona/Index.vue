@@ -179,7 +179,7 @@ export default {
         };
         this.dialogAdd = true;
       },
-      createPersona(val, msg) {
+      createPersona(val, msg) {  
         if (!val) {
           this.error = ''
           this.textFind = msg

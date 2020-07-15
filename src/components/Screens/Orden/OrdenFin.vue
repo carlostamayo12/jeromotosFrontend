@@ -2,7 +2,7 @@
   <div class="q-pa-md row items-start q-gutter-md">
     <q-card class="my-card">
       <q-card-section style="background: #000" class="q-py-none text-white">
-        <div class="text-overline q-py-none col">Orden # {{orden.id}}</div>
+        <div class="text-overline q-py-none col" v-if="orden.id !==0">Orden # 000{{orden.id}}</div>
       </q-card-section>
       <q-card-section class="row q-pt-xs">
         <q-select
@@ -25,7 +25,7 @@
           style="max-width: 300px"
         />
 
-        <q-input v-if="orden.id !== 0"
+        <!--<q-input v-if="orden.id !== 0"
           label="Fecha Ingreso"
           color="black"
           dense
@@ -33,7 +33,7 @@
           class="q-mx-md col"
           v-model="orden.fechaIngreso"
           style="max-width: 300px"
-        />
+        />-->
 
          <q-input v-if="orden.id !== 0"
           label="Kilometraje"
@@ -70,7 +70,7 @@
 
       </q-card-section>
     </q-card>
-    
+    <!--<pre>{{listaServiciosEnvio}}</pre>-->
     <div class="row" v-if="orden.id !== 0">
       <DatosMoto class="my-card col q-mr-md" :orden="orden" :ultimo="ultimo" />
       <DatosPropietario class="my-card col" :orden="orden.moto" />
@@ -109,14 +109,20 @@
           </q-item>
         </q-list>
       </q-card>
-      <!--<pre>{{checkedRealizados}}</pre>
-      <pre>{{orden}}</pre>-->
-			<q-card class="q-mt-lg my-card col">
-				<q-card-section>
-          Solicitudes
+      
+			<q-card class="q-mt-lg my-card col" v-if="orden.id !== 0">
+				<p class="bg-black text-white q-py-xs q-pl-md q-mb-none text-overline">Solicitudes</p>
+        <q-card-section>
+          <q-input readonly color="black" v-model="orden.solicitudes" type="textarea" autogrow />
 				</q-card-section>
 			</q-card>
 
+      <q-card class="q-mt-lg my-card col" v-if="orden.id !== 0">
+				<p class="bg-black text-white q-py-xs q-pl-md q-mb-none text-overline">Observaciones</p>
+        <q-card-section>
+          <q-input color="black" v-model="orden.observaciones" type="textarea" autogrow />
+				</q-card-section>
+			</q-card>
 
 
     <q-dialog v-model="dialogError">
@@ -161,9 +167,11 @@
         listaSelectOrden: [],
         listaOrden: [],
         listaServicioTaller: [],
+        listaServiciosEnvio:[],
         checkedSolicitados: [],
         checkedRealizados: [],
         listaJoin:[],
+        tituloOrden: 'tituloOrden',
         orden: {
           id: 0,
           fechaIngreso: 0,
@@ -214,6 +222,13 @@
     },
     computed: {
       numeroOrden: function(){
+        if(this.orden.id == 0){
+          return 'Orden'
+        }
+        else if(this.orden.id.length == 1 ){
+          return 'tamaño 1'
+        }
+        return 'Orden # ss'
         /*if(this.orden.id === 0){
           return ''
         }else{
@@ -230,7 +245,59 @@
     },
     methods: {
       
+      cancelarOrden(){
+          this.orden.estado = 'Cancelado'
+          var ruta = 'ordenentrada/cancelar'
+
+          http(ruta, this.orden, response => {
+            if(!response.data.error){
+
+            }else{
+
+            }
+          }, e => {
+
+          } )
+
+      },
+      
       finalizarOrden(){
+        this.orden.fechaSalida = Number.parseFloat((this.$moment().format("X"))/(3600*24)).toFixed(5)
+        this.orden.estado = 'Finalizado'
+        var ruta = 'ordenEntrada/finalizar'
+
+        this.listaServiciosEnvio = mapping.listaServiciosRealizados(this.listaServicioTaller, this.checkedRealizados)
+        
+        this.listaServiciosEnvio.forEach(element => {
+          //console.log(element)
+          http('servicios/update', element, response =>{
+            //console.log(response.data.datos)
+          } , e => {
+
+          })
+        
+        });
+        
+        console.log('notificar')
+        http('notificaciones/finalizar', {placa: this.orden.moto.placa }, response =>{
+
+        }, e =>{
+
+        })
+        
+        http(ruta, {orden: this.orden , adminId: 1}, response =>{
+            //this.listaOrden = []
+            //this.listaSelectOrden = []
+            this.cargarOrdenes()
+            this.orden = mapping.datoOrdenNew(this.orden)
+            this.selectOrden = { value: 0, label: "" }
+            //console.log(response.data.datos)
+        }, e =>{
+
+        })
+
+      },
+      finalizarOrdenOrigin(){
         this.listaEnvio = mapping.serviciosRealizados(this.listaServicioTaller, this.checkedRealizados)
         this.orden.fechaSalida = Number.parseFloat((this.$moment().format("X"))/(3600*24)).toFixed(5)
         this.orden.estado = 'Finalizado'
@@ -296,7 +363,7 @@
         
 
         
-        /*http(ruta, datos, response => {
+        http(ruta, datos, response => {
           if(!response.data.error){
             this.cargarOrdenes()
             this.orden = mapping.datoOrdenNew(this.orden)
@@ -307,7 +374,7 @@
         }, e=>{
           this.error = e.message
           this.dialogError = true
-        })*/
+        })
       },
       selectedOrden() {
         this.checkedSolicitados = []
@@ -330,12 +397,14 @@
                 this.listaOrden = response.data.datos;
                 this.listaSelectOrden = mapping.ordenSelect(response.data.datos);
               } else {
-                this.informacion = "No Existen Ordenes";
-                this.dialogInformacion = true;
+                this.listaOrden = []
+                this.listaSelectOrden = []
+                //this.informacion = "No Existen Ordenes";
+                //this.dialogInformacion = true;
               }
             } else {
-              this.error = response.data.mensaje;
-              this.dialogError = true;
+              //this.error = response.data.mensaje;
+              //this.dialogError = true;
             }
           },
           e => {

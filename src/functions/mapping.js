@@ -1,10 +1,10 @@
 const mapping = {
-	contadorInit:(data, motoId) =>{
-		return data.map(item =>{
+	contadorInit: (data, motoId) => {
+		return data.map(item => {
 			return {
 				id: 0,
-				servicioId: item.servicioId ,
-				motoId:motoId
+				servicioId: item.servicioId,
+				motoId: motoId
 			}
 		})
 	},
@@ -27,8 +27,8 @@ const mapping = {
 			return item
 		})
 	},
-	tablaEnvio: (data, adminId
-	) => {
+
+	tablaEnvio: (data, adminId) => {
 		return data.map(item => {
 			return {
 				id: item.id,
@@ -50,14 +50,30 @@ const mapping = {
 			}
 		})
 	},
-	listaServiciosSolicitados: (data) => {
+	listaServiciosSolicitados: (orden, checkRealizados) => {
+		return checkRealizados.map(item => {
+
+		})
+	},
+
+	listaServiciosRealizados: (data, checkedRealizados) => {
 		return data.map(item => {
-			return {
-				id: 0,
-				solicitados: 0,
-				realizados: 0,
-				servicioId: item.servicioId,
-				ordenId: 0
+			if (checkedRealizados.includes(item.servicioId)) {
+				return {
+					id: item.id,
+					solicitados: item.solicitados,
+					realizados: true,
+					servicioId: item.servicioId,
+					ordenId: item.ordenId
+				}
+			}else{
+				return {
+					id: item.id,
+					solicitados: item.solicitados,
+					realizados: item.realizados,
+					servicioId: item.servicioId,
+					ordenId: item.ordenId
+				}
 			}
 		})
 	},
@@ -65,7 +81,7 @@ const mapping = {
 		return data.map(item => {
 			return {
 				id: 0,
-				solicitados: (checkSolicitados.filter(s => s === item.servicioId)).length > 0 ? 1 : 0,				
+				solicitados: (checkSolicitados.filter(s => s === item.servicioId)).length > 0 ? 1 : 0,
 				realizados: 0,
 				servicioId: item.servicioId,
 				ordenId: ordenId
@@ -83,7 +99,7 @@ const mapping = {
 			}
 		})
 	},
-	datoMotoOrdenNuevo: (dato) =>{
+	datoMotoOrdenNuevo: (dato) => {
 		return {
 			id: 0,
 			placa: null,
@@ -116,13 +132,13 @@ const mapping = {
 			observaciones: '',
 			costoServicio: 0,
 			costoRepuestos: 0,
-			estado:'Iniciado',
+			estado: 'Iniciado',
 			motoId: 0,
 			tecnicoId: 0,
 			adminId: 1
 		}
 	},
-	ordenSelect:(data) =>{
+	ordenSelect: (data) => {
 		return data.map(item => {
 			return {
 				value: item.id,
@@ -130,10 +146,10 @@ const mapping = {
 			}
 		})
 	},
-	toCheckedSolicitados: (data) =>{
+	toCheckedSolicitados: (data) => {
 		var chk = []
-		data.map(item =>{
-			if(item.solicitados){
+		data.map(item => {
+			if (item.solicitados) {
 				chk.push(item.servicioId)
 			}
 		})

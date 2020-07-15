@@ -9,7 +9,7 @@
         color="black"
         dense
         v-model.trim="dato.nombre"
-        class="text-uppercase"
+        class="text-uppercase"  
         autofocus
         stack-label
         label="Nombre"

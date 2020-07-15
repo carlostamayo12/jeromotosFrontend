@@ -2,10 +2,6 @@
 <template>
   <div class="box">
     <h2>Login</h2>
-    <!--<img
-      alt="Quasar logo"
-      src="statics/bg2.jpg"   
-    >-->
     <form>
       <div class="inputBox">
         <input type="text" autocomplete="on" v-model="user" required />
@@ -29,17 +25,17 @@
 </template>
 
 <script>
-  import { LocalStorage, SessionStorage } from 'quasar'
-  import http from '../functions/http'
-  import Error from '../components/Screens/Error'
-  
+  import { LocalStorage, SessionStorage } from "quasar";
+  import http from "../functions/http";
+  import Error from "../components/Screens/Error";
+
   export default {
-    components:{
+    components: {
       Error
     },
     data() {
       return {
-        error:'',
+        error: "",
         dialogError: false,
         user: "",
         pwd: ""
@@ -53,20 +49,25 @@
     },
     methods: {
       login() {
-        var ruta = 'persona/findOne'
-        var datos = {id: 6}
-        http(ruta, datos, response => {
-          if(!response.data.error){
-            SessionStorage.set("administrador",response.data.datos)
-            this.$router.push("/main");
-          }else{
-            this.error = response.data.mensaje
-            this.dialogError = true
+        var ruta = "persona/findOne";
+        var datos = { id: 1 };
+        http(
+          ruta,
+          datos,
+          response => {
+            if (!response.data.error) {
+              SessionStorage.set("administrador", response.data.datos);
+              this.$router.push("/main");
+            } else {
+              this.error = response.data.mensaje;
+              this.dialogError = true;
+            }
+          },
+          e => {
+            this.error = e.message;
+            this.dialogError = true;
           }
-        }, e =>{
-            this.error = e.message
-            this.dialogError = true
-        })
+        );
       },
       recuperarPwd() {},
       cambiarPwd() {}
@@ -81,7 +82,6 @@
     letter-spacing: 1px;
   }
   .body {
-    
     background-image: url("../statics/bg2.jpg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -96,6 +96,7 @@
   }
 
   .box {
+    background-image: url("../statics/bg2.jpg");
     position: absolute;
     top: 0;
     /*left: 50%;*/

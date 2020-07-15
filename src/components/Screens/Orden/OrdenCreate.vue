@@ -32,6 +32,7 @@
         />
 
         <q-btn
+          style="margin-left: 600px"
           color="red"
           v-if="dato.id !== 0"
           :disable="disabledButton"
@@ -103,9 +104,9 @@
       <q-card class="q-mt-lg my-card col q-ml-md">
         <p class="bg-black text-white q-py-xs q-pl-md q-mb-none text-overline">Solicitudes</p>
         <q-card-section>
-          <q-input label="Solicitud1" color="black" v-model="solicitud_1" type="textarea" autogrow />
-          <q-input label="Solicitud2" color="black" v-model="solicitud_2" type="textarea" autogrow />
-          <q-input label="Solicitud3" color="black" v-model="solicitud_3" type="textarea" autogrow />
+          <q-input  color="black" v-model="solicitud_1" type="textarea" autogrow />
+          <!--<q-input label="Solicitud2" color="black" v-model="solicitud_2" type="textarea" autogrow />
+          <q-input label="Solicitud3" color="black" v-model="solicitud_3" type="textarea" autogrow />-->
         </q-card-section>
       </q-card>
 
@@ -114,8 +115,23 @@
       </q-dialog>
 
       <q-dialog v-model="dialogInformacion">
-        <Informacion :informacion="informacion" />
+        <q-card style="width: 300px">
+          <q-card-section>
+            <div class="text-h6">Notificacion</div>
+          </q-card-section>
+          <q-card-section class="q-pt-none">{{informacion}}</q-card-section>
+            <q-card-actions align="right" class="bg-white text-teal">
+              <q-btn flat label="OK" v-close-popup />
+            </q-card-actions>
+        </q-card>
       </q-dialog>
+      
+      
+      
+      
+      <!--<q-dialog v-model="dialogInformacion">
+        <Informacion :informacion="informacion" />
+      </q-dialog>-->
     </div>
   </div>
 </template>
@@ -211,7 +227,7 @@
             this.solicitud_3 !== "") &&
           this.orden.kilometraje.length > 0 &&
           this.selectTecnico.value > 0 &&
-          (this.ultimo === 'No Registra' || this.orden.kilometraje > this.ultimo )
+          (this.ultimo === 'NA' || this.orden.kilometraje > this.ultimo )
         ) {
           return false;
         }
@@ -249,8 +265,10 @@
           this.checkedSolicitados,
           this.orden.id
         );
-        this.orden.solicitudes =
-          this.solicitud_1 + "**" + this.solicitud_2 + "**" + this.solicitud_3;
+        this.orden.solicitudes = this.solicitud_1
+        
+        /*this.orden.solicitudes =
+          this.solicitud_1 + "**" + this.solicitud_2 + "**" + this.solicitud_3;*/
 
         var datos = { orden: this.orden, lista: this.listaServiciosEnvio };
         var ruta = "ordenEntrada/create";
@@ -267,6 +285,8 @@
               this.solicitud_3 = "";
               this.selectTecnico = { value: 0, label: "" };
               this.checkedSolicitados = [];
+              //this.dialogFind = false
+              //this.dialogError = false
               //this.informacion = 'Generada la orden'
               //this.dialogInformacion = true
             } else {
@@ -308,7 +328,7 @@
                       if (response.data.datos !== null) {
                         this.ultimo = response.data.datos.kilometraje;
                       } else {
-                        this.ultimo = "No Registra";
+                        this.ultimo = "NA";
                       }
                     } else {
                       this.error = response.data.mensaje;
